@@ -1,0 +1,78 @@
+---
+request:
+  method: GET
+  path: "/v2/commerce/transactions/history/buy"
+  cookies: {"visit": "true"}
+response:
+  statusCode: 200
+  headers:
+    Content-Type:
+    - json
+  cookies: {"visit": "false"}
+  body: '[
+        {
+        "id": 9999999999,
+        "item_id": 90000,
+        "price": 9999,
+        "quantity": 9,
+        "created": "2023-08-27T17:58:27+00:00",
+        "purchased": "2023-08-27T17:58:46+00:00"
+    },
+    {
+        "id": 7191392107,
+        "item_id": 94876,
+        "price": 9999,
+        "quantity": 9,
+        "created": "2023-08-27T17:58:27+00:00",
+        "purchased": "2023-08-27T17:58:46+00:00"
+    },
+    {
+        "id": 7191392106,
+        "item_id": 24359,
+        "price": 222,
+        "quantity": 2,
+        "created": "2023-08-28T17:58:27+00:00",
+        "purchased": "2023-08-28T17:58:46+00:00"
+    },
+    {
+        "id": 7191392105,
+        "item_id": 24359,
+        "price": 114,
+        "quantity": 1,
+        "created": "2023-08-27T17:58:27+00:00",
+        "purchased": "2023-08-27T17:58:46+00:00"
+    },
+    {
+        "id": 7191392104,
+        "item_id": 24359,
+        "price": 115,
+        "quantity": 9,
+        "created": "2023-08-27T17:47:03+00:00",
+        "purchased": "2023-08-27T17:58:46+00:00"
+    },
+    {
+        "id": 7189464137,
+        "item_id": 48917,
+        "price": 2007,
+        "quantity": 25,
+        "created": "2023-08-22T15:40:55+00:00",
+        "purchased": "2023-08-26T14:02:35+00:00"
+    },
+    {
+        "id": 7189464133,
+        "item_id": 94123,
+        "price": 20000,
+        "quantity": 2,
+        "created": "2023-08-22T15:40:55+00:00",
+        "purchased": "2023-08-26T14:02:35+00:00"
+    },
+    {
+        "id": 7189231342,
+        "item_id": 77567,
+        "price": 1705,
+        "quantity": 4,
+        "created": "2023-08-26T10:13:40+00:00",
+        "purchased": "2023-08-26T10:17:56+00:00"
+    }
+]'
+control: {"priority": 1,}

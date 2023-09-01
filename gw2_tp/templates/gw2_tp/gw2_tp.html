@@ -1,0 +1,22 @@
+{% extends 'gw2_tp/base.html' %}
+
+{% block content %}
+<h1>{{title}}</h1>
+
+<form action="{% url 'fetch_history' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">Fetch and Save History Buys</button>
+</form>
+
+<form action="{% url 'delete_entries' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">Delete All Entries</button>
+</form>
+
+<ul class="list-articles">
+    {% for item in buys %}
+    <p>{{item.item_id}} | {{item.price}} | {{item.quantity}}</p>
+    {% endfor %}
+</ul>
+
+{% endblock %}
