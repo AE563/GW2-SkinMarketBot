@@ -1,5 +1,5 @@
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 
 # Конечная точка API для получения данных истории транзакций
@@ -7,7 +7,7 @@ HISTORY_BUYS_ENDPOINT = \
     'https://api.guildwars2.com/v2/commerce/transactions/history/buys'
 if DEBUG is True:
     HISTORY_BUYS_ENDPOINT = \
-        'http://0.0.0.0:8083/v2/commerce/transactions/history/buy'
+        'http://0.0.0.0:8083/v2/commerce/transactions/history/buy_second'
 
 # Конечная точка API для получения данных о предметах
 ITEMS_ENDPOINT = \

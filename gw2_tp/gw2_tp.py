@@ -2,7 +2,7 @@ import requests
 from django.db.models import Max
 
 
-from .models import Gw2tpBuys
+from .models import *
 from .config import *
 
 
@@ -31,7 +31,7 @@ def get_last_saved_transition_id():
     Returns:
         int: Максимальное значение transition_id или None, если записей нет.
     """
-    return Gw2tpBuys.objects.aggregate(Max('transition_id'))['transition_id__max']
+    return Buys.objects.aggregate(Max('transition_id'))['transition_id__max']
 
 
 def save_gw2tp_buy_entry(entry):
@@ -48,7 +48,7 @@ def save_gw2tp_buy_entry(entry):
     created = entry['created']
     purchased = entry['purchased']
 
-    Gw2tpBuys.objects.create(
+    Buys.objects.create(
         transition_id=transition_id,
         item_id=item_id,
         price=price,
@@ -65,10 +65,16 @@ def fetch_gw2tp_buys_data():
     Returns:
         list: Список записей о покупках или пустой список, если произошла ошибка.
     """
-    query_params = {"access_token": ACCESS_TOKEN}
+    query_params = {"access_token": ACCESS_TOKEN, "page_size": 1}
+    if DEBUG is True:
+        query_params.pop('DEBUG', 1)
     response = requests.get(HISTORY_BUYS_ENDPOINT, query_params)
+    print(response.headers.get('X-Page-Total'))
     data = check_api_response(response)
     return data
+
+
+fetch_gw2tp_buys_data()
 
 
 def fetch_and_save_history_buys():
@@ -101,11 +107,44 @@ def is_that_skin(item_id):
     Returns:
         bool: True, если предмет является скином для трансмутации, иначе False.
     """
-    response_items = requests.get(ITEMS_ENDPOINT, {"ids": item_id}).json()
-    data = response_items[0].get('details')
-    if data is None:
-        # Если детали предмета отсутствуют, возвращаем False
+    response = requests.get(ITEMS_ENDPOINT, {"ids": item_id})
+
+    if response.status_code != 200:
         return False
-    if data.get('type') == 'Transmutation':
-        return True
-    return False  # Возвращаем False по умолчанию, если тип не 'Transmutation'
+
+    try:
+        data = response.json()
+        if data and isinstance(data, list):
+            return data[0].get('details', {}).get('type') == 'Transmutation'
+    except Exception as e:
+        print(f"Ошибка при декодировании JSON: {e}")
+
+    return False
+
+
+def update_items_table():
+    """
+    Обновляет таблицу Items данными о предметах, являющихся скинами для трансмутации.
+
+    Returns:
+        None
+    """
+    unique_item_ids = Buys.objects.values('item_id').distinct()
+
+    for item_info in unique_item_ids:
+        item_id = item_info['item_id']
+        if not is_that_skin(item_id):
+            continue
+
+        response = requests.get(ITEMS_ENDPOINT, {"ids": item_id})
+        item_data = response.json()
+
+        item_defaults = {
+            'name': item_data[0]['name'],
+            'description': item_data[0]['description'],
+            'icon': item_data[0]['icon'],
+            'status_id': True,
+            'skin': True
+        }
+
+        Items.objects.update_or_create(item_id=item_id, defaults=item_defaults)

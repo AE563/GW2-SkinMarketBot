@@ -1,4 +1,4 @@
-import docke/r
+import docker
 from pathlib import Path
 
 config_path = Path(__file__).resolve().parent

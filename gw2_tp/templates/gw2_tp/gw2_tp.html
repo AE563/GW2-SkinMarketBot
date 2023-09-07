@@ -15,7 +15,29 @@
 
 <ul class="list-articles">
     {% for item in buys %}
-    <p>{{item.item_id}} | {{item.price}} | {{item.quantity}}</p>
+    <p>[ {{item.item_id}} | {{item.price}} | {{item.quantity}} ]</p>
+    {% endfor %}
+</ul>
+
+
+<!-- Форма для извлечения и сохранения данных Items -->
+<form action="{% url 'fetch_items' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">Fetch and Save Items</button>
+</form>
+
+<!-- Форма для удаления всех записей из таблицы Items -->
+<form action="{% url 'delete_items' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">Delete All Items</button>
+</form>
+
+<ul class="list-articles">
+    {% for item in items %}
+        <div class="item">
+            <p class="item-info">[ {{ item.item_id }} | {{ item.name }} ]</p>
+            <img class="item-icon" src="{{ item.icon }}" alt="{{ item.name }} Icon">
+        </div>
     {% endfor %}
 </ul>
 

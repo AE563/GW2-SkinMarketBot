@@ -1,16 +1,13 @@
----
 request:
   method: GET
-  path: "/v2/commerce/transactions/history/buy"
-  cookies: {"visit": "true"}
+  path: "/v2/commerce/transactions/history/buy_second"
 response:
   statusCode: 200
   headers:
     Content-Type:
     - json
-  cookies: {"visit": "false"}
   body: '[
-        {
+    {
         "id": 9999999999,
         "item_id": 90000,
         "price": 9999,
@@ -75,4 +72,3 @@ response:
         "purchased": "2023-08-26T10:17:56+00:00"
     }
 ]'
-control: {"priority": 1,}

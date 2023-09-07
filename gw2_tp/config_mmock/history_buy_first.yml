@@ -1,13 +1,11 @@
----
 request:
   method: GET
-  path: "/v2/commerce/transactions/history/buy"
+  path: "/v2/commerce/transactions/history/buy_first"
 response:
   statusCode: 200
   headers:
     Content-Type:
     - json
-  cookies: {"visit": "true"}
   body: '[
     {
         "id": 7191392105,
