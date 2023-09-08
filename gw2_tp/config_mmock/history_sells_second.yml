@@ -1,0 +1,42 @@
+request:
+  method: GET
+  path: "/v2/commerce/transactions/history/sells_second"
+response:
+  statusCode: 200
+  headers:
+    Content-Type:
+    - json
+  body: '[
+    {
+        "id": 7206256717,
+        "item_id": 94123,
+        "price": 86,
+        "quantity": 1,
+        "created": "2023-09-05T18:53:07+00:00",
+        "purchased": "2023-09-08T01:24:14+00:00"
+    },  
+    {
+        "id": 7206256716,
+        "item_id": 94123,
+        "price": 86,
+        "quantity": 1,
+        "created": "2023-09-05T18:53:07+00:00",
+        "purchased": "2023-09-08T01:24:14+00:00"
+    },  
+    {
+        "id": 7206256715,
+        "item_id": 94876,
+        "price": 86,
+        "quantity": 1,
+        "created": "2023-09-05T18:53:07+00:00",
+        "purchased": "2023-09-08T01:24:14+00:00"
+    },
+    {
+        "id": 7205795090,
+        "item_id": 36038,
+        "price": 488,
+        "quantity": 87,
+        "created": "2023-09-07T16:25:49+00:00",
+        "purchased": "2023-09-07T17:06:10+00:00"
+    }
+]'

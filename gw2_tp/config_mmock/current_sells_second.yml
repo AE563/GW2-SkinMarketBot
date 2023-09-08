@@ -1,0 +1,17 @@
+request:
+  method: GET
+  path: "/v2/commerce/transactions/current/sells_second"
+response:
+  statusCode: 200
+  headers:
+    Content-Type:
+    - json
+  body: '[
+    {
+        "id": 2725431521,
+        "item_id": 82125,
+        "price": 20430,
+        "quantity": 2,
+        "created": "2022-07-26T20:23:43+00:00"
+    }
+]'
