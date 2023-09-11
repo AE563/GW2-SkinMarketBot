@@ -4,7 +4,7 @@ from .views import *
 
 urlpatterns = [
     path('gw2-tp/', gw2_tp, name='gw2_tp'),
-    path('get_history/', get_and_save_history_buys_gw2, name='get_history'),
+    path('get_history/', get_and_save_buys, name='get_history'),
     path('delete-entries/', delete_all_buys, name='delete_entries'),
     path('get_items/', get_items, name='get_items'),
     path('delete_items/', delete_items, name='delete_items'),
