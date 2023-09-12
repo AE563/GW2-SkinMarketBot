@@ -10,15 +10,15 @@ response:
     {
         "id": 9999999999,
         "item_id": 94123,
-        "price": 9999,
-        "quantity": 1,
+        "price": 55,
+        "quantity": 11,
         "created": "2023-08-27T17:58:27+00:00",
         "purchased": "2023-08-27T17:58:46+00:00"
     },
     {
         "id": 7191392107,
         "item_id": 94876,
-        "price": 9999,
+        "price": 55,
         "quantity": 1,
         "created": "2023-08-27T17:58:27+00:00",
         "purchased": "2023-08-27T17:58:46+00:00"
@@ -26,7 +26,7 @@ response:
     {
         "id": 7189464133,
         "item_id": 94123,
-        "price": 20000,
+        "price": 55,
         "quantity": 1,
         "created": "2023-08-22T15:40:55+00:00",
         "purchased": "2023-08-26T14:02:35+00:00"
@@ -34,7 +34,7 @@ response:
     {
         "id": 7189231342,
         "item_id": 77567,
-        "price": 1705,
+        "price": 55,
         "quantity": 4,
         "created": "2023-08-26T10:13:40+00:00",
         "purchased": "2023-08-26T10:17:56+00:00"

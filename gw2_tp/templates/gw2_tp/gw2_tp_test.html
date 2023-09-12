@@ -1,13 +1,21 @@
 {% extends 'gw2_tp/base.html' %}
 
 {% block content %}
-<h1>{{title}}</h1>
+<h1>{{title}} ТЕСТ!</h1>
+{#<h2 style="color: #d90202;">Время продавать!</h2>#}
+
 
 <!-- Чекбокс для переключения состояния -->
 <label class="switch">
     <input type="checkbox" id="conditionCheckbox">
     <span class="slider round"></span>
 </label>
+
+    <!-- Форма для нотификации списка продажи -->
+<form action="{% url 'time_to_notify' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">LET's ROCK!</button>
+</form>
 
     <h3>Список покупок</h3>
 <!-- Форма для извлечения и сохранения истории покупок -->
@@ -114,6 +122,12 @@
         | Selling price threshold: {{ item.selling_price }}]</p>
     {% endfor %}
 </ul>
+
+    <!-- Форма для переучета остатков -->
+<form action="{% url 'get_leftovers' %}" method="post">
+    {% csrf_token %}
+    <button class="my-button" type="submit">Get leftovers</button>
+</form>
 
 
 {% endblock %}

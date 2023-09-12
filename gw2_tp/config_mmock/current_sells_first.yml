@@ -10,14 +10,14 @@ response:
     {
         "id": 2780620698,
         "item_id": 94123,
-        "price": 5562,
+        "price": 55,
         "quantity": 1,
         "created": "2022-11-16T17:57:13+00:00"
     },
     {
         "id": 2725431521,
         "item_id": 82125,
-        "price": 20430,
+        "price": 55,
         "quantity": 2,
         "created": "2022-07-26T20:23:43+00:00"
     }

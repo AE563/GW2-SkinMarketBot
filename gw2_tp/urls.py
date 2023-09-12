@@ -3,7 +3,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('gw2-tp/', gw2_tp, name='gw2_tp'),
+    path('gw2-tp-test/', gw2_tp_test, name='gw2-test'),
     path('get_history/', get_and_save_buys, name='get_history'),
     path('delete-entries/', delete_all_buys, name='delete_entries'),
     path('get_items/', get_items, name='get_items'),
@@ -15,5 +15,7 @@ urlpatterns = [
          name='get_current_sells_list'),
     path('get_sells_data/', get_sells_data, name='get_sells_data'),
     path('delete_sells/', delete_sells, name='delete_sells'),
+    path('get_leftovers/', get_leftovers, name='get_leftovers'),
+    path('time_to_notify/', time_to_notify, name='time_to_notify'),
 
 ]

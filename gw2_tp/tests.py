@@ -1,22 +1,10 @@
-# import requests
-#
-# ACCESS_TOKEN = \
-#     '44718987-59DC-234C-AEFA-8491368222AF8DD722F7-0A84-4218-B2E8-AD56903D4503'
-#
-# current_sells_endpoint_mock = \
-#     'http://0.0.0.0:8083/v2/commerce/transactions/history/sells_first'
-#
-# current_sells_endpoint = \
-#     'https://api.guildwars2.com/v2/commerce/transactions/history/sells'
-#
-#
-# query_params = {"access_token": ACCESS_TOKEN}
-#
-#
-# response_mock = requests.get(current_sells_endpoint_mock, query_params)
-# response_mock = response_mock.json()
-#
-# response_gw = requests.get(current_sells_endpoint, query_params)
-# response_gw = response_gw.json()
-#
-# print(response_mock == response_gw)
+# @classmethod
+# def calculate_and_update_selling_price(cls):
+#     markup_percentage = 50  # Процент наценки. Например, 50% (1.5)
+#     convert_markup_percentage_to_decimal_number = 1 + (markup_percentage / 100)
+#     prices_to_update = cls.objects.filter(selling_price__isnull=True)
+#     for price in prices_to_update:
+#         selling_price = (price.price_now
+#                          * convert_markup_percentage_to_decimal_number)
+#         price.selling_price = selling_price
+#         price.save()
