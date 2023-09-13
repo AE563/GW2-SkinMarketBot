@@ -17,7 +17,7 @@
     <button class="my-button" type="submit">LET's ROCK!</button>
 </form>
 
-    <h3>Список покупок</h3>
+    <h3>Покупки</h3>
 <!-- Форма для извлечения и сохранения истории покупок -->
 <form action="{% url 'get_history' %}" method="post">
     {% csrf_token %}
@@ -38,17 +38,22 @@
 
 
 <!-- Список покупок -->
+<details>
+    <summary>
+        Список покупок
+    </summary>
+    <ul class="list-articles">
+        {% for item in buys %}
+        <p>[ Item ID: {{item.item_id}}
+            | Item price: {{item.price}}
+            | Item quantity: {{item.quantity}}
+            | Selling price threshold: {{ item.selling_price }}]</p>
+        {% endfor %}
+    </ul>
+</details>
 
-<ul class="list-articles">
-    {% for item in buys %}
-    <p>[ Item ID: {{item.item_id}}
-        | Item price: {{item.price}}
-        | Item quantity: {{item.quantity}}
-        | Selling price threshold: {{ item.selling_price }}]</p>
-    {% endfor %}
-</ul>
 
-<h3>Список предметов</h3>
+<h3>Предметов</h3>
 <!-- Форма для извлечения и сохранения данных предметов -->
 <form action="{% url 'get_items' %}" method="post">
     {% csrf_token %}
@@ -67,8 +72,12 @@
     <button class="my-button" type="submit">Delete All Items</button>
 </form>
 
-
 <!-- Список предметов -->
+<details>
+    <summary>
+        Список предметов
+    </summary>
+
 
 <ul class="list-articles">
     {% for item in items %}
@@ -81,26 +90,33 @@
         ]</p>
     {% endfor %}
 </ul>
+</details>
 
-
-<h3>Список предметов 'на продаже'</h3>
+<h3>На продаже</h3>
 <!-- Форма для обновления предметов 'на продаже' -->
 <form action="{% url 'get_current_sells_list' %}" method="post">
     {% csrf_token %}
     <button class="my-button" type="submit">Update current sells list</button>
 </form>
 
-<ul class="list-articles">
+<details>
+    <summary>
+        Список предметов 'на продаже'
+    </summary>
+    <ul class="list-articles">
     {% for item in current_sells %}
     <p>[ Item ID: {{item.item_id}}
         | Item price: {{item.price}}
         | Item quantity: {{item.quantity}}
         | Selling price threshold: {{ item.selling_price }}]</p>
     {% endfor %}
-</ul>
+    </ul>
+</details>
 
 
-    <h3>Список проданных предметов</h3>
+
+
+    <h3>Проданные</h3>
 <!-- Форма для извлечения и сохранения истории покупок -->
 <form action="{% url 'get_sells_data' %}" method="post">
     {% csrf_token %}
@@ -113,15 +129,20 @@
     {% csrf_token %}
     <button class="my-button" type="submit">Delete All Entries</button>
 </form>
-
-<ul class="list-articles">
+<details>
+    <summary>
+        Список проданных предметов
+    </summary>
+    <ul class="list-articles">
     {% for item in sells %}
     <p>[ Item ID: {{item.item_id}}
         | Item price: {{item.price}}
         | Item quantity: {{item.quantity}}
         | Selling price threshold: {{ item.selling_price }}]</p>
     {% endfor %}
-</ul>
+    </ul>
+</details>
+
 
     <!-- Форма для переучета остатков -->
 <form action="{% url 'get_leftovers' %}" method="post">

@@ -52,25 +52,27 @@ class BaseTransaction(models.Model):
 
     @classmethod
     def get_trading_data(cls, endpoint):
-        if debug is True:
-            query_params = {"access_token": ACCESS_TOKEN}
+        access_token = ACCESS_TOKEN
+        page_size = 200
+        page = 0
+        if debug:
+            query_params = {"access_token": access_token}
             response = requests.get(endpoint, query_params)
             data = cls.check_api_response(response)
             return data
 
         else:
             data_fetch = []
-            pages = 0
-            query_params = {"access_token": ACCESS_TOKEN, "page_size": 200}
+            query_params = {"access_token": access_token, "page_size": page_size}
             response = requests.get(endpoint, query_params)
             max_pages = int(response.headers.get('X-Page-Total')) - 1
 
-            while pages <= max_pages:
-                pages += 1
+            while page <= max_pages:
+                page += 1
                 data_fetch += response.json()
-                query_params = {"access_token": ACCESS_TOKEN,
+                query_params = {"access_token": access_token,
                                 "page_size": 200,
-                                "page": pages}
+                                "page": page}
                 response = requests.get(endpoint, query_params)
             return data_fetch
 
@@ -107,7 +109,7 @@ class Items(models.Model):
     name = models.CharField(max_length=255, blank=True, null=True)
     description = models.CharField(max_length=255, blank=True, null=True)
     icon = models.CharField(max_length=255, blank=True, null=True)
-    skin = models.BooleanField(default=True)
+    skin = models.BooleanField(blank=True, null=True)
 
     def __str__(self):
         return (f"ID: {self.item_id}, "
@@ -117,44 +119,40 @@ class Items(models.Model):
                 f"Skin: {self.skin}, ")
 
     @classmethod
-    def is_skin(cls, item_id):
-        if Items.objects.filter(item_id=item_id).exists():
-            return True
-
-        response = requests.get(ITEMS_ENDPOINT, {"ids": item_id})
-
-        if response.status_code != 200:
-            return False
-
-        try:
-            data = response.json()
-            if data and isinstance(data, list):
-                return data[0].get('details', {}).get('type') == 'Transmutation'
-        except Exception as error:
-            print(f"Ошибка при декодировании JSON: {error}")
-
-        return False
-
-    @classmethod
     def update_items_table(cls):
         unique_item_ids = Buys.objects.values('item_id').distinct()
+        item_ids_to_update = []
 
         for item_info in unique_item_ids:
             item_id = item_info['item_id']
-            if not cls.is_skin(item_id):
-                continue
 
-            response = requests.get(ITEMS_ENDPOINT, {"ids": item_id})
-            item_data = response.json()
+            # Проверьте, есть ли предмет уже в таблице
+            if not cls.objects.filter(item_id=item_id).exists():
+                item_ids_to_update.append(item_id)
 
-            item_defaults = {
-                'name': item_data[0]['name'],
-                'description': item_data[0]['description'],
-                'icon': item_data[0]['icon'],
-                'skin': True
-            }
+        if not item_ids_to_update:
+            return
 
-            cls.objects.update_or_create(item_id=item_id, defaults=item_defaults)
+        # Один запрос для получения данных по всем item_id
+        response = requests.get(ITEMS_ENDPOINT,
+                                {"ids": ",".join(map(str, item_ids_to_update))})
+
+        if response.status_code != 200:
+            return
+
+        try:
+            data = response.json()
+            for item_data in data:
+                item_id = item_data['id']
+                item_defaults = {
+                    'name': item_data.get('name', ''),
+                    'description': item_data.get('description', ''),
+                    'icon': item_data.get('icon', ''),
+                    'skin': item_data.get('details', {}).get('type') == 'Transmutation'
+                }
+                cls.objects.update_or_create(item_id=item_id, defaults=item_defaults)
+        except Exception as error:
+            print(f"Ошибка при декодировании JSON: {error}")
 
     def is_eligible_for_sale(self):
         """
@@ -163,10 +161,19 @@ class Items(models.Model):
         Returns:
             bool: True, если предмет подходит для продажи, иначе False.
         """
-        # Проверка на наличие остатков
-        currently_available = Leftovers.objects.get(item_id=self)
+        # Проверка, является ли предмет скином
+        if self.skin != 1:
+            return False
 
-        if currently_available.currently_available <= 0:
+        # Проверка на наличие остатков
+        try:
+            leftovers = Leftovers.objects.get(item_id=self)
+            currently_available = leftovers.currently_available
+
+            if currently_available <= 0:
+                return False
+        except Leftovers.DoesNotExist:
+            # Если записи в таблице Leftovers нет, то предмет не подходит для продажи
             return False
 
         # Проверка на отсутствие в таблице CurrentSells
@@ -187,7 +194,7 @@ class Items(models.Model):
 
 
 class Leftovers(models.Model):
-    item_id = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
+    item = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
     currently_available = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
@@ -195,9 +202,13 @@ class Leftovers(models.Model):
 
 
 def calculate_and_update_leftovers():
-    unique_item_ids = Items.objects.values('item_id').distinct()
-    for item_info in unique_item_ids:
+    # Получить все item_id, для которых скин = 1
+    skin_item_ids = Items.objects.filter(skin=True).values('item_id')
+
+    for item_info in skin_item_ids:
         item_id = item_info['item_id']
+
+        # Рассчитать остатки только для предметов, скин которых = 1
         total_buys = (Buys.objects
                       .filter(item_id=item_id)
                       .aggregate(Sum('quantity'))['quantity__sum'] or 0)
@@ -208,12 +219,9 @@ def calculate_and_update_leftovers():
         total_sells = total_sells or 0  # Если сумма пуста (нет продаж), устанавливаем 0
         leftovers_value = total_buys - total_sells
 
-        # Получить экземпляр Items по item_id
-        item_instance, created = Items.objects.get_or_create(item_id=item_id)
-
-        # Получить или создать запись Leftovers, используя экземпляр Items
+        # Получить или создать запись Leftovers, используя item_id
         leftovers_instance, leftovers_created = Leftovers.objects.get_or_create(
-            item_id=item_instance,
+            item_id=item_id,
             defaults={'currently_available': leftovers_value}
         )
 
@@ -223,14 +231,14 @@ def calculate_and_update_leftovers():
 
 
 class Price(models.Model):
-    item_id = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
+    item = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
     selling_price = models.IntegerField(blank=True, null=True)
     price_now = models.IntegerField(blank=True, null=True)
     maximum_price = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return f"""
-        Item ID: {self.item_id},
+        Item ID: {self.item},
         Selling Price: {self.selling_price},
         Price Now: {self.price_now},
         Maximum Price: {self.maximum_price}
@@ -240,46 +248,84 @@ class Price(models.Model):
     def calculate_and_update_selling_price(cls):
         markup_percentage = 50  # Процент наценки. Например, 50% (1.5)
         percentage_to_decimal_number = 1 + (markup_percentage / 100)
-        unique_item_ids = Items.objects.values('item_id').distinct()
 
-        for item_info in unique_item_ids:
+        # Получаем все item_id, для которых skin=True
+        skin_item_ids = Items.objects.filter(skin=True).values('item_id').distinct()
+
+        # Собираем все item_id для одного запроса
+        item_ids_to_update = [item_info['item_id'] for item_info in skin_item_ids]
+        query_params = {'ids': ",".join(map(str, item_ids_to_update))}
+        response = requests.get(PRICE_ENDPOINT, query_params)
+        data_response = response.json()
+
+        selling_prices = {}
+
+        for item_data in data_response:
+            item_id = item_data['id']
+            currently_available = Leftovers.objects.get(
+                item_id=item_id).currently_available
+
+            buys = Buys.objects.filter(item_id=item_id).order_by('-transition_id')
             counter = 0
-            item_id = item_info['item_id']
-            data = Leftovers.objects.get(item_id=item_id)
-            currently_available = data.currently_available
 
-            buys = (Buys.objects.filter(item_id=item_id).order_by('-transition_id'))
             for buy in buys:
                 quantity = buy.quantity
                 counter += quantity
+
                 if counter >= currently_available:
                     price_buy = buy.price
                     quantity_buy = buy.quantity
                     price_per_item = price_buy / quantity_buy
                     selling_price = price_per_item * percentage_to_decimal_number
-                    price_instance = cls.objects.get(item_id=item_id)
-                    price_instance.selling_price = selling_price
-                    price_instance.save()
+                    selling_prices[item_id] = selling_price
                     break
 
-    @classmethod
-    def update_or_create_prices_for_items(cls):
-        unique_item_ids = Items.objects.values('item_id').distinct()
-        for item_info in unique_item_ids:
-            item_id = item_info['item_id']
+        for item_id, selling_price in selling_prices.items():
             try:
                 price_instance = cls.objects.get(item__item_id=item_id)
             except cls.DoesNotExist:
                 price_instance = None
+
             if not price_instance:
                 price_instance = cls(item=Items.objects.get(item_id=item_id))
-            query_params = {'ids': item_id}
-            response = requests.get(PRICE_ENDPOINT, query_params)
-            data_response = response.json()[0]
-            item_price = data_response.get('sells').get('unit_price')
-            price_instance.price_now = item_price
+
+            price_instance.selling_price = selling_price
+            price_instance.save()
+
+    @classmethod
+    def update_or_create_prices_for_items(cls):
+        # Получаем все item_id, для которых цена продажи отсутствует и skin=True
+        unique_item_ids = Items.objects.filter(price__isnull=True, skin=True).values(
+            'item_id').distinct()
+
+        # Собираем все item_id для одного запроса
+        item_ids_to_update = [item_info['item_id'] for item_info in unique_item_ids]
+
+        query_params = {'ids': ','.join(map(str, item_ids_to_update))}
+        response = requests.get(PRICE_ENDPOINT, query_params)
+        data_response = response.json()
+
+        selling_prices = {}
+
+        for item_data in data_response:
+            item_id = item_data['id']
+            item_price = item_data['sells']['unit_price']
+            selling_prices[item_id] = item_price
+
+        for item_id in item_ids_to_update:
+            try:
+                price_instance = cls.objects.get(item__item_id=item_id)
+            except cls.DoesNotExist:
+                price_instance = cls(item=Items.objects.get(item_id=item_id))
+
+            item_price = selling_prices.get(item_id)
+            if item_price is not None:
+                price_instance.price_now = item_price
+
             if (price_instance.maximum_price is None
-                    or item_price > price_instance.maximum_price):
+                    or (
+                            item_price is not None
+                            and item_price > price_instance.maximum_price)):
                 price_instance.maximum_price = item_price
 
             price_instance.save()
