@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from gw2_tp.models import *
+from gw2_tp.tests import send_text
+
 
 menu = [{'title': 'GitHub', 'url_name': 'github'},
         {'title': 'GW2-TP', 'url_name': 'gw2_tp'},
@@ -114,10 +116,10 @@ def time_to_notify(request):
 
     # Создание сообщения
     if items_for_sale:
-        message = "Предметы на продажу: " + ", ".join(items_for_sale)
+        message = "Items for sale: \n" + ",\n".join(items_for_sale)
     else:
         message = "Нет предметов для продажи."
 
     # Вывод или отправка сообщения
-    print(message)
+    send_text(message)
     return redirect('gw2-test')
