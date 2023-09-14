@@ -1,7 +1,8 @@
-from django.db import models
 import requests
+from django.db import models
 from gw2_tp.config import *
 from django.db.models import Max, Sum
+from gw2_tp.tokens import GW_API_ACCESS_KEY
 
 
 class BaseTransaction(models.Model):
@@ -52,7 +53,7 @@ class BaseTransaction(models.Model):
 
     @classmethod
     def get_trading_data(cls, endpoint):
-        access_token = ACCESS_TOKEN
+        access_token = GW_API_ACCESS_KEY
         page_size = 200
         page = 0
         if debug:

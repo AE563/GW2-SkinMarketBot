@@ -1,14 +1,11 @@
 import requests
-
-# Замените 'YOUR_TELEGRAM_BOT_TOKEN' на ваш настоящий токен Telegram бота
-TOKEN = '5759952619:AAGzguveLyOFmiyjHLOVvcZUkl9O-x-gmvQ'
-CHAT_ID = -847535892
+from gw2_tp.tokens import TG_BOT_TOKEN, TG_CHAT_ID
 
 
 def send_text(text):
-    url = f'https://api.telegram.org/bot{TOKEN}/sendMessage'
+    url = f'https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage'
     data = {
-        'chat_id': CHAT_ID,
+        'chat_id': TG_CHAT_ID,
         'text': text,
         'parse_mode': 'HTML'
     }

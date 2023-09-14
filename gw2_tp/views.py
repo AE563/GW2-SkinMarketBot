@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from gw2_tp.models import *
-from gw2_tp.tests import send_text
+from gw2_tp.sending_notifications import send_text
 
 
 menu = [{'title': 'GitHub', 'url_name': 'github'},
