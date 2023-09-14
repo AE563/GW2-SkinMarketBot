@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gw2_tp',
+    'rpsls',
 ]
 
 MIDDLEWARE = [
