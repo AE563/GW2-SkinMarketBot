@@ -6,37 +6,6 @@
 <h2>Перед деплоем НЕ ЗАБУДЬ ВСЕ ПРОВЕРИТЬ!!!</h2>
 
 
-<!-- Чекбокс для переключения состояния -->
-<label class="switch">
-    <input type="checkbox" id="conditionCheckbox">
-    <span class="slider round"></span>
-</label>
-
-    <!-- Форма для нотификации списка продажи -->
-<form action="{% url 'time_to_notify' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">LET's ROCK!</button>
-</form>
-
-    <h3>Покупки</h3>
-<!-- Форма для извлечения и сохранения истории покупок -->
-<form action="{% url 'get_history' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Get and Save History Buys</button>
-</form>
-
-<!-- Форма для обсчета цены продажи -->
-<form action="{% url 'calculate_selling_price' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Calculate selling prices</button>
-</form>
-
-<!-- Форма для удаления всех записей истории покупок -->
-<form action="{% url 'delete_entries' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Delete All Entries</button>
-</form>
-
 
 <!-- Список покупок -->
 <details>
@@ -54,52 +23,6 @@
 </details>
 
 
-<h3>Предметов</h3>
-<!-- Форма для извлечения и сохранения данных предметов -->
-<form action="{% url 'get_items' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Get and Save Items</button>
-</form>
-
-<!-- Форма для обновления цен на предметы -->
-<form action="{% url 'get_items_prices' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Update item prices</button>
-</form>
-
-<!-- Форма для удаления всех записей предметов -->
-<form action="{% url 'delete_items' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Delete All Items</button>
-</form>
-
-<!-- Список предметов -->
-<details>
-    <summary>
-        Список предметов
-    </summary>
-
-
-<ul class="list-articles">
-    {% for item in items %}
-        <!-- Отображение данных о предмете -->
-        <p class="item-info">[
-        <img class="item-icon" src="{{ item.icon }}" alt="{{ item.name }} Icon">
-        | ID: {{ item.item_id }}
-        | Name: {{ item.name }}
-        | Price now: {{ item.price_now }}
-        ]</p>
-    {% endfor %}
-</ul>
-</details>
-
-<h3>На продаже</h3>
-<!-- Форма для обновления предметов 'на продаже' -->
-<form action="{% url 'get_current_sells_list' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Update current sells list</button>
-</form>
-
 <details>
     <summary>
         Список предметов 'на продаже'
@@ -115,21 +38,6 @@
 </details>
 
 
-
-
-    <h3>Проданные</h3>
-<!-- Форма для извлечения и сохранения истории покупок -->
-<form action="{% url 'get_sells_data' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Get and Save Sells</button>
-</form>
-
-
-<!-- Форма для удаления всех записей истории покупок -->
-<form action="{% url 'delete_sells' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Delete All Entries</button>
-</form>
 <details>
     <summary>
         Список проданных предметов
@@ -143,13 +51,6 @@
     {% endfor %}
     </ul>
 </details>
-
-
-    <!-- Форма для переучета остатков -->
-<form action="{% url 'get_leftovers' %}" method="post">
-    {% csrf_token %}
-    <button class="my-button" type="submit">Get leftovers</button>
-</form>
 
 
 {% endblock %}

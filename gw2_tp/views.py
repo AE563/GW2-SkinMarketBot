@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from gw2_tp.models import *
 from gw2_tp.sending_notifications import notify
+from .models import Buys
 
 
 def gw2_tp_test(request):
@@ -110,15 +111,10 @@ def main(request):
 
     # Попытка получить все записи о покупках
     try:
-        buys = Buys.objects.all()
+        # buys = Buys.objects.all()
+        buys = Buys.objects.filter(item_id__skin=True)
     except Buys.DoesNotExist:
         buys = empty_list  # Если данных нет, используем пустой список
-
-    # Попытка получить все записи о предметах
-    try:
-        items = Items.objects.all()
-    except Items.DoesNotExist:
-        items = empty_list  # Если данных нет, используем пустой список
 
     # Попытка получить все записи о предметах на продаже
     try:
@@ -138,7 +134,6 @@ def main(request):
 
     context = {'title': 'GW2-TP',
                'buys': buys,
-               'items': items,
                'current_sells': current_sells,
                'sells': sells,
                'price': price}
