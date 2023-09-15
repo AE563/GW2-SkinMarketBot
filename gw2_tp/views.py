@@ -111,8 +111,8 @@ def main(request):
 
     # Попытка получить все записи о покупках
     try:
-        # buys = Buys.objects.all()
-        buys = Buys.objects.filter(item_id__skin=True)
+        buys = Buys.objects.all()
+        # buys = Buys.objects.filter(item_id__skin=True)
     except Buys.DoesNotExist:
         buys = empty_list  # Если данных нет, используем пустой список
 
