@@ -17,5 +17,5 @@ urlpatterns = [
     path('delete_sells/', delete_sells, name='delete_sells'),
     path('get_leftovers/', get_leftovers, name='get_leftovers'),
     path('notify/', time_to_notify, name='time_to_notify'),
-
+    path('main/', main, name='main'),
 ]

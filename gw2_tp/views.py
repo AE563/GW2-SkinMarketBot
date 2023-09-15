@@ -1,12 +1,6 @@
 from django.shortcuts import render, redirect
 from gw2_tp.models import *
-from gw2_tp.sending_notifications import send_text
-
-
-menu = [{'title': 'GitHub', 'url_name': 'github'},
-        {'title': 'GW2-TP', 'url_name': 'gw2_tp'},
-        {'title': 'RPSLS-game', 'url_name': 'rpsls_game'},
-        ]
+from gw2_tp.sending_notifications import notify
 
 
 def gw2_tp_test(request):
@@ -38,8 +32,7 @@ def gw2_tp_test(request):
     except Price.DoesNotExist:
         price = []  # Если данных нет, используем пустой список
 
-    context = {'menu': menu,
-               'title': 'GW2-TP',
+    context = {'title': 'GW2-TP',
                'buys': buys,
                'items': items,
                'current_sells': current_sells,
@@ -108,18 +101,45 @@ def get_leftovers(request):
 
 
 def time_to_notify(request):
-    # Получение всех предметов
-    items = Items.objects.all()
-
-    # Подготовка списка предметов, подходящих для продажи
-    items_for_sale = [item.name for item in items if item.is_eligible_for_sale()]
-
-    # Создание сообщения
-    if items_for_sale:
-        message = "Items for sale: \n" + ",\n".join(items_for_sale)
-    else:
-        message = "Нет предметов для продажи."
-
-    # Вывод или отправка сообщения
-    send_text(message)
+    notify()
     return redirect('gw2-test')
+
+
+def main(request):
+    empty_list = []
+
+    # Попытка получить все записи о покупках
+    try:
+        buys = Buys.objects.all()
+    except Buys.DoesNotExist:
+        buys = empty_list  # Если данных нет, используем пустой список
+
+    # Попытка получить все записи о предметах
+    try:
+        items = Items.objects.all()
+    except Items.DoesNotExist:
+        items = empty_list  # Если данных нет, используем пустой список
+
+    # Попытка получить все записи о предметах на продаже
+    try:
+        current_sells = CurrentSells.objects.all()
+    except CurrentSells.DoesNotExist:
+        current_sells = empty_list  # Если данных нет, используем пустой список
+
+    try:
+        sells = Sells.objects.all()
+    except Sells.DoesNotExist:
+        sells = empty_list  # Если данных нет, используем пустой список
+
+    try:
+        price = Price.objects.all()
+    except Price.DoesNotExist:
+        price = empty_list  # Если данных нет, используем пустой список
+
+    context = {'title': 'GW2-TP',
+               'buys': buys,
+               'items': items,
+               'current_sells': current_sells,
+               'sells': sells,
+               'price': price}
+    return render(request, 'gw2_tp/main.html', context=context)
