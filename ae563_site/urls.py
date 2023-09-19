@@ -16,12 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-# urlpatterns = [
-#     path('admin/', admin.site.urls),
-#     path('', include('gw2_tp.urls')),
-#     path('gw2-tp/', include('gw2_tp.urls')),
-#     path('rpsls/', include('rpsls.urls')),
-# ]
 
 urlpatterns = [
     path('admin/', admin.site.urls),

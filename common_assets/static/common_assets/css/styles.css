@@ -515,3 +515,27 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+.container {
+    display: flex;
+}
+
+.column {
+    flex: 1; /* Распределит пространство равномерно между колонками */
+    padding: 10px; /* Добавьте отступы, если необходимо */
+}
+
+/* Центрировать текст в ячейках таблицы */
+td.text-center {
+    text-align: center;
+}
+
+
+/* Стиль подложки для строк таблицы */
+tr.table-row::after {
+    content: "";
+    display: block;
+    background-color: #c71f1f; /* Цвет подложки */
+    height: 5px; /* Высота подложки */
+}

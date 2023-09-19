@@ -5,9 +5,125 @@ from django.db.models import Max, Sum
 from gw2_tp.tokens import GW_API_ACCESS_KEY
 
 
+def get_unique_item_ids(*data_lists):
+    unique_item_ids_set = set()
+
+    for data_list in data_lists:
+        for item_data in data_list:
+            item_id = item_data['item_id']
+            unique_item_ids_set.add(item_id)
+
+    return list(unique_item_ids_set)
+
+
+class Items(models.Model):
+    item_id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=255, default='')
+    description = models.CharField(max_length=255, default='')
+    icon = models.CharField(max_length=255, default='')
+    skin = models.BooleanField(blank=True, null=True)
+
+    def __str__(self):
+        return (f"ID: {self.item_id}, "
+                f"Name: {self.name}, "
+                f"Description: {self.description}, "
+                f"Icon: {self.icon}, "
+                f"Skin: {self.skin}, ")
+
+    @classmethod
+    def update_items_table(cls, unique_item_ids):
+        item_ids_to_update = []
+
+        # TODO сделать обработку более 200+ запросов
+        for item_id in unique_item_ids:
+            # Проверьте, есть ли предмет уже в таблице
+            if not cls.objects.filter(item_id=item_id).exists():
+                item_ids_to_update.append(item_id)
+
+        if (not item_ids_to_update) or (item_ids_to_update == []):
+            return
+
+        # Один запрос для получения данных по всем item_id
+        # item_ids_to_update = [77567, 28418, 19721, 87306, 21259, 21260, 21261, 21262,
+        #                       21263, 21264, 99601, 95505, 19726, 19729, 24341, 48917,
+        #                       24343, 49432, 24344, 24345, 70939, 24348, 24349, 24350,
+        #                       24351, 90910, 24353, 24354, 19747, 24355, 24357, 24356,
+        #                       19748, 24359, 24358, 77604, 24363, 87336, 95513, 95528,
+        #                       12584, 96051, 95540, 43319, 93176, 95543, 95545, 95551,
+        #                       95552, 95553, 93003, 19791, 70992, 77648, 100692, 82777,
+        #                       20316, 27485, 77667, 2404, 98167, 98175, 27007, 98178,
+        #                       93061, 27014, 25479, 93074, 96146, 24473, 24474, 19722,
+        #                       71581, 47097, 50082, 44962, 28580, 94117, 94119, 19725,
+        #                       94123, 44972, 44975, 44976, 44977, 93107, 44979, 94134,
+        #                       44983, 94136, 94142, 94143, 44992, 67528, 94152, 24524,
+        #                       19732, 93137, 95510, 12253, 2538, 24558, 47086, 2546,
+        #                       44022, 15352, 27641]
+
+        response = requests.get(ITEMS_ENDPOINT,
+                                {"ids": ",".join(map(str, item_ids_to_update))})
+        print(f'response status_code: {response.status_code}')
+        print(response.json())
+
+        if response.status_code != 200:
+            return
+
+        try:
+            data = response.json()
+            print(f'data: {data}')
+            for item_data in data:
+                item_id = item_data['id']
+                item_defaults = {
+                    'name': item_data.get('name', ''),
+                    'description': item_data.get('description', ''),
+                    'icon': item_data.get('icon', ''),
+                    'skin': item_data.get('details', {}).get('type') == 'Transmutation'
+                }
+                cls.objects.update_or_create(item_id=item_id, defaults=item_defaults)
+        except Exception as error:
+            print(f"Ошибка при декодировании JSON: {error}")
+
+    def is_eligible_for_sale(self):
+        """
+        Проверяет, является ли предмет подходящим для продажи.
+
+        Returns:
+            bool: True, если предмет подходит для продажи, иначе False.
+        """
+        # Проверка, является ли предмет скином
+        if self.skin != 1:
+            return False
+
+        # Проверка на наличие остатков
+        try:
+            leftovers = Leftovers.objects.get(item_id=self)
+            currently_available = leftovers.currently_available
+
+            if currently_available <= 0:
+                return False
+        except Leftovers.DoesNotExist:
+            # Если записи в таблице Leftovers нет, то предмет не подходит для продажи
+            return False
+
+        # Проверка на отсутствие в таблице CurrentSells
+        if CurrentSells.objects.filter(item_id=self.item_id).exists():
+            return False
+
+        # Получение цены продажи из таблицы Price
+        try:
+            price = Price.objects.get(item_id=self)
+            if price.price_now < price.selling_price:
+                return False
+        except Price.DoesNotExist:
+            # Если записи в таблице Price нет, то предмет не подходит для продажи
+            return False
+
+        # Если все условия выполнены, предмет подходит для продажи
+        return True
+
+
 class BaseTransaction(models.Model):
     transition_id = models.IntegerField(primary_key=True)
-    item_id = models.IntegerField()
+    item = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
     price = models.IntegerField()
     quantity = models.IntegerField()
     created = models.DateTimeField()
@@ -78,9 +194,8 @@ class BaseTransaction(models.Model):
             return data_fetch
 
     @classmethod
-    def get_and_save(cls, endpoint):
+    def get_and_save(cls, data):
         last_saved_transition_id = cls.get_last_saved_transition_id()
-        data = cls.get_trading_data(endpoint)
 
         if data is None:
             return
@@ -105,98 +220,9 @@ class Sells(BaseTransaction):
     purchased = models.DateTimeField(blank=True, null=True)
 
 
-class Items(models.Model):
-    item_id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=255, blank=True, null=True)
-    description = models.CharField(max_length=255, blank=True, null=True)
-    icon = models.CharField(max_length=255, blank=True, null=True)
-    skin = models.BooleanField(blank=True, null=True)
-
-    def __str__(self):
-        return (f"ID: {self.item_id}, "
-                f"Name: {self.name}, "
-                f"Description: {self.description}, "
-                f"Icon: {self.icon}, "
-                f"Skin: {self.skin}, ")
-
-    @classmethod
-    def update_items_table(cls):
-        unique_item_ids = Buys.objects.values('item_id').distinct()
-        item_ids_to_update = []
-
-        for item_info in unique_item_ids:
-            item_id = item_info['item_id']
-
-            # Проверьте, есть ли предмет уже в таблице
-            if not cls.objects.filter(item_id=item_id).exists():
-                item_ids_to_update.append(item_id)
-
-        if not item_ids_to_update:
-            return
-
-        # Один запрос для получения данных по всем item_id
-        response = requests.get(ITEMS_ENDPOINT,
-                                {"ids": ",".join(map(str, item_ids_to_update))})
-
-        if response.status_code != 200:
-            return
-
-        try:
-            data = response.json()
-            for item_data in data:
-                item_id = item_data['id']
-                item_defaults = {
-                    'name': item_data.get('name', ''),
-                    'description': item_data.get('description', ''),
-                    'icon': item_data.get('icon', ''),
-                    'skin': item_data.get('details', {}).get('type') == 'Transmutation'
-                }
-                cls.objects.update_or_create(item_id=item_id, defaults=item_defaults)
-        except Exception as error:
-            print(f"Ошибка при декодировании JSON: {error}")
-
-    def is_eligible_for_sale(self):
-        """
-        Проверяет, является ли предмет подходящим для продажи.
-
-        Returns:
-            bool: True, если предмет подходит для продажи, иначе False.
-        """
-        # Проверка, является ли предмет скином
-        if self.skin != 1:
-            return False
-
-        # Проверка на наличие остатков
-        try:
-            leftovers = Leftovers.objects.get(item_id=self)
-            currently_available = leftovers.currently_available
-
-            if currently_available <= 0:
-                return False
-        except Leftovers.DoesNotExist:
-            # Если записи в таблице Leftovers нет, то предмет не подходит для продажи
-            return False
-
-        # Проверка на отсутствие в таблице CurrentSells
-        if CurrentSells.objects.filter(item_id=self.item_id).exists():
-            return False
-
-        # Получение цены продажи из таблицы Price
-        try:
-            price = Price.objects.get(item_id=self)
-            if price.price_now < price.selling_price:
-                return False
-        except Price.DoesNotExist:
-            # Если записи в таблице Price нет, то предмет не подходит для продажи
-            return False
-
-        # Если все условия выполнены, предмет подходит для продажи
-        return True
-
-
 class Leftovers(models.Model):
     item = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
-    currently_available = models.IntegerField(blank=True, null=True)
+    currently_available = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return f'''{self.currently_available}'''
@@ -233,9 +259,9 @@ def calculate_and_update_leftovers():
 
 class Price(models.Model):
     item = models.ForeignKey(Items, on_delete=models.CASCADE, default=None)
-    selling_price = models.IntegerField(blank=True, null=True)
-    price_now = models.IntegerField(blank=True, null=True)
-    maximum_price = models.IntegerField(blank=True, null=True)
+    selling_price = models.IntegerField(blank=True, default=0)
+    price_now = models.IntegerField(blank=True, default=0)
+    maximum_price = models.IntegerField(blank=True, default=0)
 
     def __str__(self):
         return f"""
@@ -301,6 +327,8 @@ class Price(models.Model):
 
         # Собираем все item_id для одного запроса
         item_ids_to_update = [item_info['item_id'] for item_info in unique_item_ids]
+        if not item_ids_to_update:
+            return
 
         query_params = {'ids': ','.join(map(str, item_ids_to_update))}
         response = requests.get(PRICE_ENDPOINT, query_params)
