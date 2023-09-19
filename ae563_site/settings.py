@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 import os.path
 from pathlib import Path
+
+from django.contrib import staticfiles
+
 # from SECRET_KEY import SECRET_KEY
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -131,7 +134,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'common_assets', 'static'),
 ]
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
