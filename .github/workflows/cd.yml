@@ -1,4 +1,4 @@
-name: CD
+name: CI/CD Workflow
 
 on:
   push:
@@ -6,12 +6,27 @@ on:
       - main
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and Test
+        run: |
+          # Your build and test commands here
+          # For example:
+          # npm install
+          # npm test
+
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Deploy to Production
       uses: actions/checkout@v3
 
     - name: Deploy to Hosting
