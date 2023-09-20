@@ -1,22 +1,53 @@
-/*!* Стили для элементов с классом "container" и "column" *!*/
-/*.container {*/
-/*    display: flex;*/
-/*}*/
+.container {
+    display: flex;
+}
+.column {
+    flex: 1;
+    padding: 10px;
+}
+.trading_table {
+    border-collapse: collapse;
+}
+.trading_table td.text-center {
+    text-align: center;
+}
 
-/*.column {*/
-/*    flex: 1;*/
-/*    padding: 10px;*/
-/*}*/
+.trading_table tr {
+	border-bottom: 1px solid #000;
+}
+.trading_table tr td, .trading_table tr th {
+	border-right: 1px solid #000;
+	padding: 8px;
+}
+.trading_table tr td:last-child, .trading_table tr th:last-child {
+	border-right: none;
+}
+.trading_table tr td:first-child, .trading_table tr th:first-child {
+	padding: 0;
+	width: 64px;
+}
 
-/*!* Стили для текста в ячейках таблицы *!*/
-/*td.text-center {*/
-/*    text-align: center;*/
-/*}*/
 
-/*!* Стили для подложки строк таблицы *!*/
-/*tr.table-row::after {*/
-/*    content: "";*/
-/*    display: block;*/
-/*    background-color: #c71f1f;*/
-/*    height: 5px;*/
-/*}*/
+
+/* Styles for commented components */
+.my-button {
+    background-color: #0b520b;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.my-button:hover {
+    background-color: #45a049;
+}
+
+.my-button:active {
+    background-color: #3e8e41;
+}

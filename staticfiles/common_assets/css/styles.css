@@ -1,127 +1,11 @@
-/* Общие стили для HTML и BODY */
-html, body {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    width: 100%;
-    color: #444;
+body {
+    font-family: sans-serif;
 }
-
-/* Стили для ссылок */
-a {
-    color: #0059b2;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #CC0000;
-    text-decoration: underline;
-}
-
-/* Стили для изображений */
-img {
-    max-width: 600px;
-    height: auto;
-}
-
-img.img-article-left {
-    max-width: 300px;
-    height: auto;
-    float: left;
-    padding: 0 10px 10px 0;
-}
-
-img.img-article-left.thumb {
-    max-width: 150px;
-    height: auto;
-}
-
-/* Стили для кнопок */
-.my-button {
-    background-color: #0b520b;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.my-button:hover {
-    background-color: #45a049;
-}
-
-.my-button:active {
-    background-color: #3e8e41;
-}
-
-
-
-/* Стили для элементов с классом "container" и "column" */
-.container {
-    display: flex;
-}
-
-.column {
-    flex: 1;
-    padding: 10px;
-}
-
-/* Стили для текста в ячейках таблицы */
-td.text-center {
-    text-align: center;
-}
-
-/* Стили для подложки строк таблицы */
-tr.table-row::after {
-    content: "";
-    display: block;
-    background-color: #c71f1f;
-    height: 5px;
-}
-
-
-
-div.article-panel {
-    background: #eee;
-    padding: 5px 10px 5px 10px;
+* {
     box-sizing: border-box;
-    overflow: hidden;
-    color: #555;
-}
-div.article-panel p.first {
-    margin: 0;
-    float: left;
-}
-div.article-panel p.last {
-    margin: 0;
-    float: right;
 }
 
-ul.list-articles {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-}
-ul.list-articles li {
-	border-bottom: 1px solid #ccc;
-}
-
-.table-page {
-	width: 100%;
-	height: 100%;
-	vertical-align: top;
-}
-.table-page tr {height: 100%;}
-
-.clear {clear: both;}
-
-.header {
+header {
 	background: #3F4137;
 	height: 60px;
 }
@@ -132,26 +16,21 @@ ul.list-articles li {
 	height: 60px;
 }
 
-ul.mainmenu {
-	list-style: none;
-	margin: 0;
-	padding: 0;
+.mainmenu {
+    display: flex;
+    align-items: center;
 	height: 60px;
-	color: #fdc073;
 	font-size: 20px;
-	overflow: hidden;
 }
-ul.mainmenu li {
-	float: left;
+.mainmenu_item {
 	margin: 18px 40px 0 30px;
 }
-ul.mainmenu li.logo {margin: 0;}
-ul.mainmenu li.last {float: right;}
+.mainmenu_item.logo {margin: 0;}
 
-ul.mainmenu li a {
+.mainmenu_item a {
 	color: #fdc073;
 	text-decoration: none;
 }
-ul.mainmenu li a:hover {
+.mainmenu_item a:hover {
 	color: #FDA83D;
 }

@@ -37,20 +37,20 @@
 <div class="container">
     <div class="column">
         <!-- Информация о покупках -->
-        <h1>Покупки</h1>
-            <table>
-                <!-- Заголовки таблицы -->
-                <thead>
-                    <tr class="table-row">
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item_summary in summary_data %}
-                    {% if item_summary.category == "Покупки" %}
+        <div class="trading_title">Покупки</div>
+        <table class="trading_table">
+            <!-- Заголовки таблицы -->
+            <thead>
+                <tr class="table-row">
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Total Price</th>
+                    <th>Total Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item_summary in summary_data %}
+                {% if item_summary.category == "Покупки" %}
                     <tr class="table-row">
                         <td>
                             {% for item_info in items_info %}
@@ -69,27 +69,27 @@
                         <td class="text-center">{{ item_summary.total_price }}</td>
                         <td class="text-center">{{ item_summary.total_quantity }}</td>
                     </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div class="column">
         <!-- Информация о текущих продажах -->
-        <h1>Сейчас на продаже</h1>
-            <table>
-                <!-- Заголовки таблицы -->
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item_summary in summary_data %}
-                    {% if item_summary.category == "Сейчас на продаже" %}
+        <div class="trading_title">Сейчас на продаже</div>
+        <table class="trading_table">
+            <!-- Заголовки таблицы -->
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Total Price</th>
+                    <th>Total Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item_summary in summary_data %}
+                {% if item_summary.category == "Сейчас на продаже" %}
                     <tr>
                         <td>
                             {% for item_info in items_info %}
@@ -108,27 +108,27 @@
                         <td class="text-center">{{ item_summary.total_price }}</td>
                         <td class="text-center">{{ item_summary.total_quantity }}</td>
                     </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <div class="column">
         <!-- Информация о проданных товарах -->
-        <h1>Продано</h1>
-            <table>
-                <!-- Заголовки таблицы -->
-                <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item_summary in summary_data %}
-                    {% if item_summary.category == "Продано" %}
+        <div class="trading_title">Продано</div>
+        <table class="trading_table">
+            <!-- Заголовки таблицы -->
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Total Price</th>
+                    <th>Total Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item_summary in summary_data %}
+                {% if item_summary.category == "Продано" %}
                     <tr>
                         <td>
                             {% for item_info in items_info %}
@@ -147,13 +147,10 @@
                         <td class="text-center">{{ item_summary.total_price }}</td>
                         <td class="text-center">{{ item_summary.total_quantity }}</td>
                     </tr>
-                    {% endif %}
-                    {% endfor %}
-                </tbody>
-            </table>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
-
-
-
 {% endblock %}
