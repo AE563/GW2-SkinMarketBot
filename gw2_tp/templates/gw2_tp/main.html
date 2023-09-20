@@ -1,156 +1,155 @@
 {% extends 'common_assets/base.html' %}
+
 {% load static %}
 
-
-{% block styles %}<link type="text/css" href="{% static 'gw2_tp/css/gw2_tp_styles.css' %}" rel="stylesheet">{% endblock %}
-
+{% block styles %}
+    <link type="text/css" href="{% static 'gw2_tp/css/gw2_tp_styles.css' %}" rel="stylesheet">
+{% endblock %}
 
 {% block content %}
+    <div class="warnings">
+        <div class="warnings_title">{{title}} ТЕСТОВЫЙ БИЛД!</div>
+        <div class="warnings_subtitle">Перед выходом в паблик НЕ ЗАБУДЬ ВСЕ ПРОВЕРИТЬ!!!</div>
+    </div>
+
+    {#<!-- Форма для удаления всех записей DB -->#}
+    {#<form action="{% url 'delete_all' %}" method="post">#}
+    {#    {% csrf_token %}#}
+    {#    <button class="my-button" type="submit">DELETE ALL!!!</button>#}
+    {#</form>#}
+    {##}
+    {#    <!-- Форма для отправки уведомления в TG -->#}
+    {#<form action="{% url 'time_to_notify' %}" method="post">#}
+    {#    {% csrf_token %}#}
+    {#    <button class="my-button" type="submit">time_to_notify</button>#}
+    {#</form>#}
 
 
-<h1>{{title}} ТЕСТОВЫЙ БИЛД!</h1>
-<h2>Перед выходом в паблик НЕ ЗАБУДЬ ВСЕ ПРОВЕРИТЬ!!!</h2>
-
-{#    <!-- Форма для удаления всех записей DB -->#}
-{#<form action="{% url 'delete_all' %}" method="post">#}
-{#    {% csrf_token %}#}
-{#    <button class="my-button" type="submit">DELETE ALL!!!</button>#}
-{#</form>#}
-{##}
-{#    <!-- Форма для отправки уведомления в TG -->#}
-{#<form action="{% url 'time_to_notify' %}" method="post">#}
-{#    {% csrf_token %}#}
-{#    <button class="my-button" type="submit">time_to_notify</button>#}
-{#</form>#}
+    {#<!-- Чекбокс для переключения состояния -->#}
+    {#<label class="switch">#}
+    {#    <input type="checkbox" id="conditionCheckbox">#}
+    {#    <span class="slider round"></span>#}
+    {#</label>#}
+    {#<link type="text/css" href="{% static 'gw2_tp/css/gw2_tp_styles.css' %}" rel="stylesheet">#}
 
 
-
-
-{#<!-- Чекбокс для переключения состояния -->#}
-{#<label class="switch">#}
-{#    <input type="checkbox" id="conditionCheckbox">#}
-{#    <span class="slider round"></span>#}
-{#</label>#}
-{#<link type="text/css" href="{% static 'gw2_tp/css/gw2_tp_styles.css' %}" rel="stylesheet">#}
-
-
-<div class="container">
-    <div class="column">
-        <!-- Информация о покупках -->
-        <div class="trading_title">Покупки</div>
-        <table class="trading_table">
-            <!-- Заголовки таблицы -->
-            <thead>
-                <tr class="table-row">
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Total Price</th>
-                    <th>Total Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item_summary in summary_data %}
-                {% if item_summary.category == "Покупки" %}
+    <div class="container">
+        <div class="column">
+            <!-- Информация о покупках -->
+            <div class="trading_title">Покупки</div>
+            <table class="trading_table">
+                <!-- Заголовки таблицы -->
+                <thead>
                     <tr class="table-row">
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    {{ item_info.name }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td class="text-center">{{ item_summary.total_price }}</td>
-                        <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Total Price</th>
+                        <th>Total Quantity</th>
                     </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="column">
-        <!-- Информация о текущих продажах -->
-        <div class="trading_title">Сейчас на продаже</div>
-        <table class="trading_table">
-            <!-- Заголовки таблицы -->
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Total Price</th>
-                    <th>Total Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item_summary in summary_data %}
-                {% if item_summary.category == "Сейчас на продаже" %}
+                </thead>
+                <tbody>
+                    {% for item_summary in summary_data %}
+                    {% if item_summary.category == "Покупки" %}
+                        <tr class="table-row">
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        {{ item_info.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">{{ item_summary.total_price }}</td>
+                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <!-- Информация о текущих продажах -->
+            <div class="trading_title">Сейчас на продаже</div>
+            <table class="trading_table">
+                <!-- Заголовки таблицы -->
+                <thead>
                     <tr>
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    {{ item_info.name }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td class="text-center">{{ item_summary.total_price }}</td>
-                        <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Total Price</th>
+                        <th>Total Quantity</th>
                     </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-    <div class="column">
-        <!-- Информация о проданных товарах -->
-        <div class="trading_title">Продано</div>
-        <table class="trading_table">
-            <!-- Заголовки таблицы -->
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Total Price</th>
-                    <th>Total Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item_summary in summary_data %}
-                {% if item_summary.category == "Продано" %}
+                </thead>
+                <tbody>
+                    {% for item_summary in summary_data %}
+                    {% if item_summary.category == "Сейчас на продаже" %}
+                        <tr>
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        {{ item_info.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">{{ item_summary.total_price }}</td>
+                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="column">
+            <!-- Информация о проданных товарах -->
+            <div class="trading_title">Продано</div>
+            <table class="trading_table">
+                <!-- Заголовки таблицы -->
+                <thead>
                     <tr>
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td>
-                            {% for item_info in items_info %}
-                                {% if item_info.item_id == item_summary.item_id %}
-                                    {{ item_info.name }}
-                                {% endif %}
-                            {% endfor %}
-                        </td>
-                        <td class="text-center">{{ item_summary.total_price }}</td>
-                        <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Total Price</th>
+                        <th>Total Quantity</th>
                     </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for item_summary in summary_data %}
+                    {% if item_summary.category == "Продано" %}
+                        <tr>
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for item_info in items_info %}
+                                    {% if item_info.item_id == item_summary.item_id %}
+                                        {{ item_info.name }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td class="text-center">{{ item_summary.total_price }}</td>
+                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 {% endblock %}

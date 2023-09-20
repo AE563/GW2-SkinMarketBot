@@ -1,9 +1,27 @@
+.warnings {
+    padding: 10px;
+}
+.warnings_title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+.warnings_sub {
+    font-size: 16px;
+    font-weight: 600;
+}
+
 .container {
     display: flex;
 }
 .column {
     flex: 1;
     padding: 10px;
+}
+.trading_title {
+    padding-bottom: 15px;
+    font-size: 20px;
+    font-weight: 600;
 }
 .trading_table {
     border-collapse: collapse;
