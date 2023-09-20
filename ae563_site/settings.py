@@ -124,9 +124,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, '../rpssl/static')
-# STATICFILES_DIRS = []
 STATIC_URL = 'ae563_site/staticfiles/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'common_assets', 'static'),
