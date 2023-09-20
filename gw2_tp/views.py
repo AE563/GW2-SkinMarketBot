@@ -7,6 +7,9 @@ from django.db.models import Sum, CharField, Value
 
 
 def main(request):
+    path_info = request.META.get('PATH_INFO')
+    http_host = request.META.get('HTTP_HOST')
+
     summary_data = []
     empty_list = []
 
