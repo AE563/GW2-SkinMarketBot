@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gw2_tp/', include('gw2_tp.urls')),
     path('rpsls/', include('rpsls.urls')),
+    path('', RedirectView.as_view(url='/gw2_tp/main/', permanent=True)),
 ]
