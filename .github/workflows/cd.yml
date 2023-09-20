@@ -41,4 +41,4 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan $SSH_END_POINT >> ~/.ssh/known_hosts
-        ssh -i ~/.ssh/id_rsa "$SSH_USER" "cd $SSH_PATH/public_html/ae563_site/ && git pull"
+        ssh -i ~/.ssh/id_rsa "$SSH_USER" "cd $SSH_PATH/public_html/ae563_site/ && git checkout db.sqlite3 && git pull"
