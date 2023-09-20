@@ -1,13 +1,13 @@
 .warnings {
-    padding: 10px;
+    padding: 10px 10px 30px;
 }
 .warnings_title {
     font-size: 20px;
     font-weight: 600;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
-.warnings_sub {
-    font-size: 16px;
+.warnings_subtitle {
+    font-size: 18px;
     font-weight: 600;
 }
 .container {

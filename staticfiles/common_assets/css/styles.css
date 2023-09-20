@@ -23,7 +23,7 @@ header {
 	font-size: 20px;
 }
 .mainmenu_item {
-	margin: 18px 40px 0 30px;
+	margin: 0 30px;
 }
 .mainmenu_item.logo {margin: 0;}
 
