@@ -1,22 +1,22 @@
-/* Стили для элементов с классом "container" и "column" */
-.container {
-    display: flex;
-}
+/*!* Стили для элементов с классом "container" и "column" *!*/
+/*.container {*/
+/*    display: flex;*/
+/*}*/
 
-.column {
-    flex: 1;
-    padding: 10px;
-}
+/*.column {*/
+/*    flex: 1;*/
+/*    padding: 10px;*/
+/*}*/
 
-/* Стили для текста в ячейках таблицы */
-td.text-center {
-    text-align: center;
-}
+/*!* Стили для текста в ячейках таблицы *!*/
+/*td.text-center {*/
+/*    text-align: center;*/
+/*}*/
 
-/* Стили для подложки строк таблицы */
-tr.table-row::after {
-    content: "";
-    display: block;
-    background-color: #c71f1f;
-    height: 5px;
-}
+/*!* Стили для подложки строк таблицы *!*/
+/*tr.table-row::after {*/
+/*    content: "";*/
+/*    display: block;*/
+/*    background-color: #c71f1f;*/
+/*    height: 5px;*/
+/*}*/
