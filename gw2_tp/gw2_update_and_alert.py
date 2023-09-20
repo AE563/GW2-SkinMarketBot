@@ -1,6 +1,24 @@
+import os
+from django.core.wsgi import get_wsgi_application
 from concurrent.futures import ThreadPoolExecutor
-from gw2_tp.models import *
 import time
+
+from .config import (history_buys_endpoint,
+                     current_sells_endpoint,
+                     history_sells_endpoint)
+from .models import (BaseTransaction,
+                     get_unique_item_ids,
+                     Items,
+                     Buys,
+                     CurrentSells,
+                     Sells,
+                     calculate_and_update_leftovers,
+                     Price)
+from .sending_notifications import notify
+
+# Настройка окружения Django
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ae563_site.settings")
+application = get_wsgi_application()
 
 
 def data_update():
@@ -68,3 +86,11 @@ def data_update():
     execution_time2 = end_time2 - start_time
     print(execution_time2)
     return
+
+
+def time_to_notify():
+    data_update()
+    notify()
+
+
+time_to_notify()

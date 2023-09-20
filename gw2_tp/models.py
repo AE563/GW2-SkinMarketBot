@@ -182,6 +182,7 @@ class BaseTransaction(models.Model):
             data_fetch = []
             query_params = {"access_token": access_token, "page_size": page_size}
             response = requests.get(endpoint, query_params)
+            print(response.headers.get('X-Page-Total'))
             max_pages = int(response.headers.get('X-Page-Total')) - 1
 
             while page <= max_pages:

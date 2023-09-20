@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 
-from gw2_tp.gw2_tp import data_update
+from gw2_tp.gw2_update_and_alert import data_update
 from gw2_tp.models import *
 from gw2_tp.sending_notifications import notify
 from django.db.models import Sum, CharField, Value
