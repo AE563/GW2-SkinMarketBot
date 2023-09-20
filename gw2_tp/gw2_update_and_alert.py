@@ -86,11 +86,3 @@ def data_update():
     execution_time2 = end_time2 - start_time
     print(execution_time2)
     return
-
-
-def time_to_notify():
-    data_update()
-    notify()
-
-
-time_to_notify()
