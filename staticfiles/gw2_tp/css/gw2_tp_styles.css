@@ -24,6 +24,7 @@
     font-weight: 600;
 }
 .trading_table {
+    width: 100%;
     border-collapse: collapse;
 }
 .trading_table td.text-center {
