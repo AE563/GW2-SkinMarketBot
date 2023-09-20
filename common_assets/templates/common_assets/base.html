@@ -7,6 +7,7 @@
     <title>{{ title }}</title>
     <link type="text/css" href="{% static 'common_assets/css/reset.css' %}" rel="stylesheet">
     <link type="text/css" href="{% static 'common_assets/css/styles.css' %}" rel="stylesheet">
+    {% block styles %}{% endblock %}
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -26,6 +27,7 @@
 
 
                 <div class="content-text">
+
                     {% block content %}{% endblock %}
                 </div>
             </td>
