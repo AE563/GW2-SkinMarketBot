@@ -14,7 +14,7 @@ from .models import (BaseTransaction,
                      Sells,
                      calculate_and_update_leftovers,
                      Price)
-from .sending_notifications import notify
+
 
 # Настройка окружения Django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ae563_site.settings")
