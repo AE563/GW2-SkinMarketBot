@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_crontab',
     'gw2_tp',
     'rpsls',
     'common_assets',
@@ -75,6 +76,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+CRONJOBS = [
+    ('*/2 * * * *', 'gw2_tp.cron.my_cron_job')
 ]
 
 WSGI_APPLICATION = 'ae563_site.wsgi.application'
