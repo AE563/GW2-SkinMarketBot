@@ -1,4 +1,4 @@
-#ae563_site/SECRET_KEY.py
-#gw2_tp/tokens.py
-#logs/**
-#db.sqlite3
+ae563_site/SECRET_KEY.py
+gw2_tp/tokens.py
+logs/**
+db.sqlite3
