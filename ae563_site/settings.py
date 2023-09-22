@@ -80,7 +80,7 @@ TEMPLATES = [
 
 CRONJOBS = [
     # ('0 18 * * *', 'gw2_tp.cron.my_cron_job')
-    ('2 * * * *', 'gw2_tp.cron.my_cron_job')
+    ('* * * * *', 'gw2_tp.cron.my_cron_job')
 ]
 
 WSGI_APPLICATION = 'ae563_site.wsgi.application'
