@@ -23,5 +23,5 @@ urlpatterns = [
     path('gw2_tp/', include('gw2_tp.urls')),
     path('rpsls/', include('rpsls.urls')),
     path('', RedirectView.as_view(url='/gw2_tp/main/', permanent=True)),
-    path('logentry_admin/', include('logentry_admin.urls')),
+    # path('logentry_admin/', include('logentry_admin.urls')),
 ]
