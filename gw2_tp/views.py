@@ -51,7 +51,7 @@ def main(request):
         'items_info': items_info,
     }
 
-    return render(request, 'gw2_tp/main.html', context=context)
+    return render(request, 'gw2_tp/gw2_alert_main.html', context=context)
 
 
 def delete_all(request):
