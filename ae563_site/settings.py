@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'gw2_tp',
     'rpsls',
     'common_assets',
-    'logentry_admin',
+    # 'logentry_admin',
 ]
 
 MIDDLEWARE = [
@@ -117,24 +117,24 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Определяем путь к файлу логов
-log_file_path = os.path.join(BASE_DIR, 'logs', 'django.log')
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',  # Уровень логирования
-            # (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-            'class': 'logging.FileHandler',
-            'filename': log_file_path,  # Путь к файлу логов
-        },
-    },
-    'root': {
-        'handlers': ['file'],
-        'level': 'DEBUG',
-    },
-}
+# log_file_path = os.path.join(BASE_DIR, 'logs', 'django.log')
+#
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'file': {
+#             'level': 'DEBUG',  # Уровень логирования
+#             # (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+#             'class': 'logging.FileHandler',
+#             'filename': log_file_path,  # Путь к файлу логов
+#         },
+#     },
+#     'root': {
+#         'handlers': ['file'],
+#         'level': 'DEBUG',
+#     },
+# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
