@@ -274,7 +274,7 @@ class Price(models.Model):
 
     @classmethod
     def calculate_and_update_selling_price(cls):
-        markup_percentage = 50  # Процент наценки. Например, 50% (1.5)
+        markup_percentage = 75  # Процент наценки. Например, 50% (1.5)
         percentage_to_decimal_number = 1 + (markup_percentage / 100)
 
         # Получаем все item_id, для которых skin=True
