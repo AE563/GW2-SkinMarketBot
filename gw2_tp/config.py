@@ -38,11 +38,6 @@ else:
         'https://api.guildwars2.com/v2/commerce/transactions/history/sells'
 
 
-# Токен доступа для аутентификации API
-# GW_API_ACCESS_KEY = \
-#     '44718987-59DC-234C-AEFA-8491368222AF8DD722F7-0A84-4218-B2E8-AD56903D4503'
-
-
 # Конечная точка API для получения данных о предметах
 ITEMS_ENDPOINT = 'https://api.guildwars2.com/v2/items'
 

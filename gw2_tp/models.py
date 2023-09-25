@@ -6,6 +6,15 @@ from gw2_tp.tokens import GW_API_ACCESS_KEY
 
 
 def get_unique_item_ids(*data_lists):
+    """
+    Получает уникальные item_id из нескольких списков данных.
+
+    Args:
+        *data_lists (list): Списки данных, из которых нужно извлечь уникальные item_id.
+
+    Returns:
+        list: Список уникальных item_id.
+    """
     unique_item_ids_set = set()
 
     for data_list in data_lists:
@@ -32,9 +41,25 @@ class Items(models.Model):
 
     @classmethod
     def update_items_table(cls, unique_item_ids):
+        """
+        Обновляет таблицу предметов (Items) на основе списка уникальных item_id.
+
+        Args:
+            unique_item_ids (list): Список уникальных item_id, которые нужно обновить.
+
+        Notes:
+            Метод выполняет запрос к API
+             для получения информации о предметах на основе их item_id.
+            Затем метод обновляет
+            или создает записи в таблице Items на основе полученных данных.
+
+        Returns:
+            None
+        """
         item_ids_to_update = []
 
-        # TODO сделать обработку более 200+ запросов
+        # TODO: Сделать обработку более 200+ запросов
+
         for item_id in unique_item_ids:
             # Проверьте, есть ли предмет уже в таблице
             if not cls.objects.filter(item_id=item_id).exists():
@@ -43,33 +68,13 @@ class Items(models.Model):
         if (not item_ids_to_update) or (item_ids_to_update == []):
             return
 
-        # Один запрос для получения данных по всем item_id
-        # item_ids_to_update = [77567, 28418, 19721, 87306, 21259, 21260, 21261, 21262,
-        #                       21263, 21264, 99601, 95505, 19726, 19729, 24341, 48917,
-        #                       24343, 49432, 24344, 24345, 70939, 24348, 24349, 24350,
-        #                       24351, 90910, 24353, 24354, 19747, 24355, 24357, 24356,
-        #                       19748, 24359, 24358, 77604, 24363, 87336, 95513, 95528,
-        #                       12584, 96051, 95540, 43319, 93176, 95543, 95545, 95551,
-        #                       95552, 95553, 93003, 19791, 70992, 77648, 100692, 82777,
-        #                       20316, 27485, 77667, 2404, 98167, 98175, 27007, 98178,
-        #                       93061, 27014, 25479, 93074, 96146, 24473, 24474, 19722,
-        #                       71581, 47097, 50082, 44962, 28580, 94117, 94119, 19725,
-        #                       94123, 44972, 44975, 44976, 44977, 93107, 44979, 94134,
-        #                       44983, 94136, 94142, 94143, 44992, 67528, 94152, 24524,
-        #                       19732, 93137, 95510, 12253, 2538, 24558, 47086, 2546,
-        #                       44022, 15352, 27641]
-
         response = requests.get(ITEMS_ENDPOINT,
                                 {"ids": ",".join(map(str, item_ids_to_update))})
-        print(f'response status_code: {response.status_code}')
-        print(response.json())
-
         if response.status_code != 200:
             return
 
         try:
             data = response.json()
-            print(f'data: {data}')
             for item_data in data:
                 item_id = item_data['id']
                 item_defaults = {
@@ -140,6 +145,15 @@ class BaseTransaction(models.Model):
 
     @classmethod
     def check_api_response(cls, response):
+        """
+        Проверяет ответ от API и возвращает данные из него, если ответ успешен.
+
+        Args:
+            response: Ответ от API.
+
+        Returns:
+            list: Данные из ответа, если успешно, или None в случае ошибки.
+        """
         if response.status_code == 200:
             data = response.json()
             return data
@@ -149,10 +163,23 @@ class BaseTransaction(models.Model):
 
     @classmethod
     def get_last_saved_transition_id(cls):
+        """
+        Получает последний сохраненный идентификатор перехода (transition_id).
+
+        Returns:
+            int: Последний сохраненный transition_id или None, если нет данных.
+        """
         return cls.objects.aggregate(Max('transition_id'))['transition_id__max']
 
     @classmethod
     def save_entry(cls, entry):
+        """
+        Сохраняет запись о переходе в базе данных.
+
+        Args:
+            entry (dict): Информация о переходе, содержащая поля
+            'id', 'item_id', 'price', 'quantity', 'created'.
+        """
         transition_id = entry['id']
         item_id = entry['item_id']
         price = entry['price']
@@ -169,22 +196,32 @@ class BaseTransaction(models.Model):
 
     @classmethod
     def get_trading_data(cls, endpoint):
+        """
+        Получает данные торговли (trading data)
+         из API, предоставляемого по указанному `endpoint`.
+
+        Args:
+            endpoint (str): URL-адрес API-конечной точки для получения данных торговли.
+
+        Returns:
+            list: Список данных торговли.
+        """
         access_token = GW_API_ACCESS_KEY
         page_size = 200
         page = 0
         if debug:
+            # Если включен режим отладки, делаем запрос без пагинации
             query_params = {"access_token": access_token}
             response = requests.get(endpoint, query_params)
             data = cls.check_api_response(response)
             return data
-
         else:
             data_fetch = []
             query_params = {"access_token": access_token, "page_size": page_size}
             response = requests.get(endpoint, query_params)
-            print(response.headers.get('X-Page-Total'))
             max_pages = int(response.headers.get('X-Page-Total')) - 1
 
+            # Перебираем страницы с данными
             while page <= max_pages:
                 page += 1
                 data_fetch += response.json()
@@ -192,10 +229,21 @@ class BaseTransaction(models.Model):
                                 "page_size": 200,
                                 "page": page}
                 response = requests.get(endpoint, query_params)
+
             return data_fetch
 
     @classmethod
     def get_and_save(cls, data):
+        """
+        Получает данные `data` и сохраняет их, если `transition_id`
+         в данных больше, чем `last_saved_transition_id`.
+
+        Args:
+            data (list): Список данных для сохранения.
+
+        Returns:
+            None
+        """
         last_saved_transition_id = cls.get_last_saved_transition_id()
 
         if data is None:
@@ -230,6 +278,12 @@ class Leftovers(models.Model):
 
 
 def calculate_and_update_leftovers():
+    """
+    Рассчитывает и обновляет остатки для предметов, у которых skin=True.
+
+    Returns:
+        None
+    """
     # Получить все item_id, для которых скин = 1
     skin_item_ids = Items.objects.filter(skin=True).values('item_id')
 
@@ -274,13 +328,21 @@ class Price(models.Model):
 
     @classmethod
     def calculate_and_update_selling_price(cls):
-        markup_percentage = 75  # Процент наценки. Например, 50% (1.5)
+        """
+        Рассчитывает и обновляет цены на продажу для предметов на основе наценки
+        и истории покупок.
+
+        Returns:
+            None
+        """
+        markup_percentage = 75  # Процент наценки. Например, 75% (1.75)
         percentage_to_decimal_number = 1 + (markup_percentage / 100)
 
         # Получаем все item_id, для которых skin=True
         skin_item_ids = Items.objects.filter(skin=True).values('item_id').distinct()
 
         # Собираем все item_id для одного запроса
+        # TODO вынести это отдельной функцией
         item_ids_to_update = [item_info['item_id'] for item_info in skin_item_ids]
         query_params = {'ids': ",".join(map(str, item_ids_to_update))}
         response = requests.get(PRICE_ENDPOINT, query_params)
@@ -322,11 +384,20 @@ class Price(models.Model):
 
     @classmethod
     def update_or_create_prices_for_items(cls):
+        """
+        Обновляет или создает цены для предметов,
+        у которых цена продажи отсутствует и skin=True.
+
+        Returns:
+            None
+        """
         # Получаем все item_id, для которых цена продажи отсутствует и skin=True
+        # TODO перепроверить функцию
         unique_item_ids = Items.objects.filter(price__isnull=True, skin=True).values(
             'item_id').distinct()
 
         # Собираем все item_id для одного запроса
+        # TODO вынести это отдельной функцией
         item_ids_to_update = [item_info['item_id'] for item_info in unique_item_ids]
         if not item_ids_to_update:
             return

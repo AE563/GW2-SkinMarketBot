@@ -1,10 +1,22 @@
 import requests
 
-from gw2_tp.models import Items
+from .models import Items
 from gw2_tp.tokens import TG_BOT_TOKEN, TG_CHAT_ID
 
 
 def send_text(text):
+    """
+    Отправляет текстовое сообщение в Telegram.
+
+    Args:
+        text (str): Текст сообщения.
+
+    Returns:
+        None
+
+    Пример использования:
+    >>> send_text("Привет, мир!")
+    """
     url = f'https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage'
     data = {
         'chat_id': TG_CHAT_ID,
@@ -23,6 +35,12 @@ def send_text(text):
 
 
 def notify():
+    """
+    Отправляет уведомление о предметах, подходящих для продажи.
+
+    Returns:
+        None
+    """
     # Получение всех предметов
     items = Items.objects.all()
 
