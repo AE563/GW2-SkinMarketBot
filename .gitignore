@@ -3,3 +3,4 @@ gw2_tp/tokens.py
 logs/**
 staticfiles/admin
 db.sqlite3
+/staticfiles/admin/
