@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>{{ title }}</title>
         <link type="text/css" href="{% static 'common_assets/css/reset.css' %}" rel="stylesheet">
@@ -10,21 +10,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <tr>
-            <td valign="top">
-                {% block mainmenu %}
-                    <header>
-                        <div class="mainmenu">
-                            <div class="mainmenu_item logo"><a href="https://github.com/AE563"><div class="logo"></div></a></div>
-                            <div class="mainmenu_item"><a href="https://www.ae563.ru/gw2_tp/main/">GW2-TP</a></div>
-                            <div class="mainmenu_item"><a href="https://www.ae563.ru/rpsls/rpsls/">RPSLS-game</a></div>
-                        </div>
-                    </header>
-                {% endblock mainmenu %}
-                <div class="content">
-                    {% block content %}{% endblock %}
-                </div>
-            </td>
-        </tr>
+        <header class="header">
+            <div class="mainmenu">
+            <div class="logo"><a href="https://github.com/AE563"><div class="logo"></div></a></div>
+            <div class="mainmenu_item"><a href="https://www.ae563.ru/gw2_tp/main/">GW2-TP</a></div>
+            <div class="mainmenu_item"><a href="https://www.ae563.ru/rpsls/rpsls/">RPSLS-game</a></div>
+            </div>
+        </header>
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
     </body>
 </html>
