@@ -1,75 +1,76 @@
+/* Стили для раздела "Warnings" */
 .warnings {
-    padding: 10px 10px 30px;
+    padding: 10px 10px 30px; /* Отступы сверху, справа, снизу и слева */
 }
+
+/* Стили для заголовка раздела "Warnings" */
 .warnings_title {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 8px;
+    font-size: 20px; /* Размер шрифта */
+    font-weight: 600; /* Толщина шрифта */
+    margin-bottom: 8px; /* Отступ снизу */
 }
+
+/* Стили для подзаголовка раздела "Warnings" */
 .warnings_subtitle {
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 18px; /* Размер шрифта */
+    font-weight: 600; /* Толщина шрифта */
 }
+
+/* Стили для контейнера "container" */
 .container {
-    display: flex;
+    display: flex; /* Используется flexbox для расположения элементов внутри контейнера */
 }
+
+/* Стили для колонки "column" внутри контейнера */
 .column {
-    flex: 1;
-    padding: 10px;
+    flex: 1; /* Равномерное распределение доступной ширины между колонками */
+    padding: 10px; /* Отступы сверху, справа, снизу и слева */
 }
+
+/* Стили для заголовка "Trading Title" */
 .trading_title {
-    padding-bottom: 15px;
-    font-size: 20px;
-    font-weight: 600;
+    padding-bottom: 15px; /* Отступ снизу */
+    font-size: 20px; /* Размер шрифта */
+    font-weight: 600; /* Толщина шрифта */
 }
+
+/* Стили для таблицы "Trading Table" */
 .trading_table {
-    width: 100%;
-    border-collapse: collapse;
+    width: 100%; /* Ширина таблицы 100% от родительского контейнера */
+    border-collapse: collapse; /* Объединение границ ячеек */
 }
+
+/* Стили для ячеек таблицы в центре "text-center" */
 .trading_table td.text-center {
-    text-align: center;
+    text-align: center; /* Выравнивание текста по центру */
 }
+
+/* Стили для строк таблицы "Trading Table" */
 .trading_table tr {
-	border-bottom: 1px solid #000;
+    border-bottom: 1px solid #000; /* Горизонтальная линия между строками */
 }
+
+/* Стили для изображений внутри ячеек таблицы */
 .trading_table td img {
-	display: block;
-	width: 100%;
-	height: auto
+    display: block; /* Отображение изображений в виде блока */
+    width: 100%; /* Ширина изображения 100% от ячейки */
+    height: auto; /* Автоматическая высота, чтобы сохранить пропорции */
 }
+
+/* Стили для ячеек и заголовков таблицы */
 .trading_table tr td, .trading_table tr th {
-	border-right: 1px solid #000;
-	padding: 8px;
-    vertical-align: middle;
+    border-right: 1px solid #000; /* Вертикальные линии между ячейками */
+    padding: 8px; /* Отступы внутри ячеек */
+    vertical-align: middle; /* Выравнивание содержимого по вертикали посередине ячейки */
 }
+
+/* Убираем правую границу для последней ячейки каждой строки */
 .trading_table tr td:last-child, .trading_table tr th:last-child {
-	border-right: none;
+    border-right: none;
 }
+
+/* Убираем левую границу для первой ячейки каждой строки */
 .trading_table tr td:first-child, .trading_table tr th:first-child {
-	padding: 0;
-	width: 64px;
-}
-
-
-/* Styles for commented components */
-.my-button {
-    background-color: #0b520b;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.my-button:hover {
-    background-color: #45a049;
-}
-
-.my-button:active {
-    background-color: #3e8e41;
+    padding: 0; /* Убираем отступы */
+    width: 64px; /* Ширина первой ячейки */
 }
