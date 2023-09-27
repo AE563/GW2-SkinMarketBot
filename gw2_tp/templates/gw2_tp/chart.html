@@ -1,0 +1,41 @@
+{% extends 'gw2_tp/gw2_alert_main.html' %}
+
+
+{% block chart %}
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Sword',     1343328],
+          ['Hammer',      1019995],
+          ['Longbow',  889998],
+          ['Short bow', 509898],
+          ['Axe',    1243299],
+          ['Dagger',    1296598],
+          ['Greatsword',     2700000],
+          ['Mace',      530098],
+          ['Pistol',  1309996],
+          ['Rifle', 823299],
+          ['Scepter',    849999],
+          ['Staff',    1304297],
+          ['Focus',     290498],
+          ['Torch',      499997],
+          ['Warhorn',  223298],
+          ['Shield', 430599]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities',
+          pieHole: 0.55,
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+{% endblock %}
