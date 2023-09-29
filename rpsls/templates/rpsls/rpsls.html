@@ -69,7 +69,7 @@
     {% else %}
         <form method="post" action="{% url 'rpsls' %}">
             {% csrf_token %}
-            <button class="my-button" type="submit" name="choice" value="Rock">Rock</button>
+            <button class="my-button btn btn-primary" type="submit" name="choice" value="Rock">Rock</button>
             <button class="my-button" type="submit" name="choice" value="Paper">Paper</button>
             <button class="my-button" type="submit" name="choice" value="Scissors">Scissors</button>
             <button class="my-button" type="submit" name="choice" value="Lizard">Lizard</button>

@@ -13,6 +13,10 @@ td.text-center {
     text-align: center;
 }
 
+td {
+    vertical-align: middle;
+}
+
 /* Стили для подложки строк таблицы */
 tr.table-row::after {
     content: "";

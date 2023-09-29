@@ -32,6 +32,16 @@ img.img-article-left {
     padding: 0 10px 10px 0; /* Отступы */
 }
 
+
+img.img-article-left.neznayuqwerty {
+    max-width: 300px; /* Максимальная ширина изображений с классом .img-article-left */
+    height: auto; /* Автоматическая высота */
+    float: right; /* Выравнивание по левому краю с обтеканием текстом справа */
+    padding: 0 10px 10px 0; /* Отступы */
+    text-align: left;
+}
+
+
 img.img-article-left.thumb {
     max-width: 150px; /* Максимальная ширина изображений с классом .thumb */
     height: auto; /* Автоматическая высота */
