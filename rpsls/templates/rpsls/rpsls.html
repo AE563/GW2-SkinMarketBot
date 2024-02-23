@@ -2,80 +2,94 @@
 
 
 {% load static %}
+
 {% block content %}
-<img src="{% static 'rpsls/images/rpsls_rule.jpg' %}" alt="rpsls_rule">
+
+    <link rel="stylesheet" type="text/css" href="{% static 'rpsls/css/rpsls.css' %}">
 
 
-<details>
-    <summary>
-        Правила игры
-    </summary>
-    <p>
-        Ножницы режут бумагу<br>
-        Бумага покрывает камень<br>
-        Камень давит ящерицу<br>
-        Ящерица отравляет Спока<br>
-        Спок ломает ножницы<br>
-        Ножницы обезглавливают ящерицу<br>
-        Бумага подставляет Спока<br>
-        Спок испаряет камень<br>
-        Камень разбивает ножницы<br>
-    </p>
-</details>
+<h2 style="margin-top: 4px;">Rock Paper Scissors Lizard Spock<br>THE GAME</h2>
 
-<h2>Rock Paper Scissors Lizard Spock - the game</h2>
-    <p>Оппонент - {{ opponent }}</p>
-    <hr>
+<div class="image-with-text">
+    <img src="{% static 'rpsls/images/rpsls-rule-iconcut.png' %}" alt="rpsls_rule">
+    <div class="text">
+        <details>
+            <summary>
+                Правила игры
+            </summary>
+            <p>
+                Ножницы режут бумагу<br>
+                Бумага покрывает камень<br>
+                Камень давит ящерицу<br>
+                Ящерица отравляет Спока<br>
+                Спок ломает ножницы<br>
+                Ножницы обезглавливают ящерицу<br>
+                Бумага подставляет Спока<br>
+                Спок испаряет камень<br>
+                Камень разбивает ножницы<br>
+                <br>
+            </p>
+        </details>
+        <p>Оппонент - {{ opponent }}</p>
+        {% if choice %}
+            {% if round_counter == 0 %}
+                <br>
+            {% else %}
+                <p>Раунд - {{ round_counter }}</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>
+
+
+
+<div class="content-block">
     {% if choice != "new_game" %}
-        <p>Вы выбрали: {{ choice }}</p>
-        <p>{{ opponent }} выбрал: {{ computer_fighter }}</p>
+        <p>Вы выбрали: [{{ choice }} : {{ computer_fighter }}]: выбрал {{ opponent }}</p>
+        <br>
+
         <p>Результаты раунда:
             {% if winner == 'computer_win' %}
                 {{ opponent }}, выиграл в этом раунде
-            {% else %}
+            {% elif winner == 'player_win' %}
                 Вы, выиграли в этом раунде
+            {% else %}
+                Ничья
             {% endif %}
-        </p><br>
-        <p>Ваш счет: {{ player_score }}</p>
-        <p>{{ opponent }} счет: {{ computer_score }}</p>
+        </p>
+        <p>Ваш счет: [{{ player_score }} : {{ computer_score }}] :{{ opponent }}</p>
     {% else %}
-        <br><br><br><br><br><br><br><br>
-        <p>Сделайте выбор:</p>
+    <p>Сделайте выбор:</p>
     {% endif %}
+</div>
 
 
-    <hr>
-    {% if choice %}
-        <p>Раунд - {{ round_counter }}</p>
-    {% else %}
-        <br><br><br>
-    {% endif %}
 
+{% if player_score == 3 %}
+    <p><b>Вы выиграли, со счетом: {{ player_score }}:{{ computer_score }}</b></p>
+    <form method="post" action="{% url 'rpsls' %}">
+        {% csrf_token %}
+    <button class="my-button" type="submit" name="choice" value="new_game">Сыграть еще раз?</button>
+    </form>
 
-    {% if player_score == 3 %}
-        <p><b>Вы выиграли, со счетом: {{ player_score }}:{{ computer_score }}</b></p>
-        <form method="post" action="{% url 'rpsls' %}">
-            {% csrf_token %}
-        <button class="my-button" type="submit" name="choice" value="new_game">Сыграть еще раз?</button>
-        </form>
+{% elif computer_score == 3 %}
+    <p><b>{{ opponent }} выиграл, со счетом: {{ computer_score }}:{{ player_score }}</b></p>
+    <form method="post" action="{% url 'rpsls' %}">
+        {% csrf_token %}
+    <button class="my-button" type="submit" name="choice" value="new_game">Сыграть еще раз?</button>
+    </form>
 
-    {% elif computer_score == 3 %}
-        <p><b>{{ opponent }} выиграл, со счетом: {{ computer_score }}:{{ player_score }}</b></p>
-        <form method="post" action="{% url 'rpsls' %}">
-            {% csrf_token %}
-        <button class="my-button" type="submit" name="choice" value="new_game">Сыграть еще раз?</button>
-        </form>
-
-    {% else %}
-        <form method="post" action="{% url 'rpsls' %}">
-            {% csrf_token %}
-            <button class="my-button btn btn-primary" type="submit" name="choice" value="Rock">Rock</button>
-            <button class="my-button" type="submit" name="choice" value="Paper">Paper</button>
-            <button class="my-button" type="submit" name="choice" value="Scissors">Scissors</button>
-            <button class="my-button" type="submit" name="choice" value="Lizard">Lizard</button>
-            <button class="my-button" type="submit" name="choice" value="Spock">Spock</button>
-        </form>
-    {% endif %}
+{% else %}
+    <form method="post" action="{% url 'rpsls' %}">
+        {% csrf_token %}
+        <br>
+        <button class="my-button" type="submit" name="choice" value="Rock">Rock</button>
+        <button class="my-button" type="submit" name="choice" value="Paper">Paper</button>
+        <button class="my-button" type="submit" name="choice" value="Scissors">Scissors</button>
+        <button class="my-button" type="submit" name="choice" value="Lizard">Lizard</button>
+        <button class="my-button" type="submit" name="choice" value="Spock">Spock</button>
+    </form>
+{% endif %}
 
 
 {% endblock %}

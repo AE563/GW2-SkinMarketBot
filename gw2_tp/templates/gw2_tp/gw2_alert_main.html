@@ -4,10 +4,64 @@
 
 {% block styles %}
     <link type="text/css" href="{% static 'gw2_tp/css/gw2_tp_styles.css' %}" rel="stylesheet">
+    
 {% endblock %}
 
 {% block content %}
     {% block chart %}{% endblock %}
+
+
+    <script>
+        function formatNumberWithSpaces(number) {
+            let numString = number.toString(); // Преобразуем число в строку
+            let formattedNumber = ''; // Итоговая отформатированная строка
+
+            // Определяем картинки для каждого разряда
+            const images = [
+                'gw2_tp/images/Gold_coin.png',
+                'gw2_tp/images/Silver_coin.png',
+                'gw2_tp/images/Copper_coin.png'];
+            let imageIndex = 0;
+
+            for (let i = numString.length - 1; i >= 0; i--) {
+                // Добавляем текущую цифру к итоговой строке
+                formattedNumber = numString[i] + formattedNumber;
+
+                // // Если длина сформированной строки кратна 2 и не является первой, добавляем пробел
+                // if (formattedNumber.length === 2 || formattedNumber.length === 5) {
+                //     // formattedNumber = ' ' + '[' + images[imageIndex++] + ']' + formattedNumber;
+                //     formattedNumber = ' ' + formattedNumber;
+                
+                // Если длина сформированной строки кратна 2 и не является первой, добавляем пробел
+                if (formattedNumber.length === 2) {
+                    // formattedNumber = ' ' + '[' + images[imageIndex++] + ']' + formattedNumber;
+                    formattedNumber = 's ' + formattedNumber + 'c';
+                }
+                if (formattedNumber.length === 7) {
+                    formattedNumber = 'g ' + formattedNumber;
+                }
+            }
+
+            return formattedNumber
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Получаем все ячейки с числовыми данными
+            var numericCells = document.querySelectorAll('.numeric-cell');
+
+            // Проходимся по каждой ячейке
+            numericCells.forEach(function(cell) {
+                // Получаем число из содержимого ячейки
+                var number = parseInt(cell.innerText);
+
+                // Форматируем число с разделением разрядов
+                var formattedNumber = formatNumberWithSpaces(number);
+
+                // Заменяем содержимое ячейки на отформатированное число
+                cell.innerText = formattedNumber;
+            });
+        });
+    </script>
 
 
     <div class="container">
@@ -18,10 +72,10 @@
                 <!-- Заголовки таблицы -->
                 <thead>
                     <tr class="table-row">
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
+                        <th></th>
+                        <th>Название</th>
+                        <th>Сумма</th>
+                        <th>Количество</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,7 +85,7 @@
                             <td>
                                 {% for item_info in items_info %}
                                     {% if item_info.item_id == item_summary.item_id %}
-                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                        <img class=img-icon src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
                                     {% endif %}
                                 {% endfor %}
                             </td>
@@ -42,8 +96,8 @@
                                     {% endif %}
                                 {% endfor %}
                             </td>
-                            <td class="text-center">{{ item_summary.total_price }}</td>
-                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                            <td class="numeric-cell">{{ item_summary.total_price }}</td>
+                            <td>{{ item_summary.total_quantity }}</td>
                         </tr>
                     {% endif %}
                     {% endfor %}
@@ -56,11 +110,11 @@
             <table class="table">
                 <!-- Заголовки таблицы -->
                 <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
+                    <tr class="table-row">
+                        <th></th>
+                        <th>Название</th>
+                        <th>Сумма</th>
+                        <th>Количество</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -70,7 +124,7 @@
                             <td>
                                 {% for item_info in items_info %}
                                     {% if item_info.item_id == item_summary.item_id %}
-                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                        <img class=img-icon src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
                                     {% endif %}
                                 {% endfor %}
                             </td>
@@ -81,8 +135,8 @@
                                     {% endif %}
                                 {% endfor %}
                             </td>
-                            <td class="text-center">{{ item_summary.total_price }}</td>
-                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                            <td class="numeric-cell">{{ item_summary.total_price }}</td>
+                            <td>{{ item_summary.total_quantity }}</td>
                         </tr>
                     {% endif %}
                     {% endfor %}
@@ -95,11 +149,11 @@
             <table class="table">
                 <!-- Заголовки таблицы -->
                 <thead>
-                    <tr>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Total Price</th>
-                        <th>Total Quantity</th>
+                    <tr class="table-row">
+                        <th></th>
+                        <th>Название</th>
+                        <th>Сумма</th>
+                        <th>Количество</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -109,7 +163,7 @@
                             <td>
                                 {% for item_info in items_info %}
                                     {% if item_info.item_id == item_summary.item_id %}
-                                        <img src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
+                                        <img class=img-icon src="{{ item_info.icon }}" alt="{{ item_info.name }}" />
                                     {% endif %}
                                 {% endfor %}
                             </td>
@@ -120,8 +174,8 @@
                                     {% endif %}
                                 {% endfor %}
                             </td>
-                            <td class="text-center">{{ item_summary.total_price }}</td>
-                            <td class="text-center">{{ item_summary.total_quantity }}</td>
+                            <td class="numeric-cell">{{ item_summary.total_price }}</td>
+                            <td>{{ item_summary.total_quantity }}</td>
                         </tr>
                     {% endif %}
                     {% endfor %}

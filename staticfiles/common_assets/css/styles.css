@@ -1,172 +1,153 @@
-/* Общие стили для HTML и BODY */
-html, body {
-    font-family: "Helvetica Neue", Arial, sans-serif; /* Шрифт для текста */
-    margin: 0; /* Убираем отступы по умолчанию */
-    padding: 0; /* Убираем поля по умолчанию */
-    height: 100%; /* Задаем высоту 100% */
-    width: 100%; /* Задаем ширину 100% */
-    color: #444; /* Цвет текста */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-/* Стили для ссылок */
-a {
-    color: #0059b2; /* Цвет ссылок */
-    text-decoration: none; /* Убираем подчеркивание */
+body {
+    background-color: #2b2d30;
+    background-image: url("/ae563_site/staticfiles/common_assets/images/pattern.png");
+    background-repeat: repeat;
+    background-attachment: fixed;
+    color: #fff;
 }
 
-a:hover {
-    color: #CC0000; /* Цвет ссылок при наведении */
-    text-decoration: underline; /* Подчеркивание при наведении */
+.header {
+    position: sticky;
+    top: 0;
+    background-color: #383838;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    width: 100%;
 }
 
-/* Стили для изображений */
-img {
-    max-width: 600px; /* Максимальная ширина изображений */
-    height: auto; /* Автоматическая высота, чтобы сохранить пропорции */
+.header-container {
+    max-width: auto;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-img.img-article-left {
-    max-width: 300px; /* Максимальная ширина изображений с классом .img-article-left */
-    height: auto; /* Автоматическая высота */
-    float: left; /* Выравнивание по левому краю с обтеканием текстом справа */
-    padding: 0 10px 10px 0; /* Отступы */
+.navigation ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }
 
-img.img-article-left.thumb {
-    max-width: 150px; /* Максимальная ширина изображений с классом .thumb */
-    height: auto; /* Автоматическая высота */
+.navigation ul li {
+    display: inline-block;
+    margin-right: 20px;
 }
 
-/* Стили для кнопок */
+.navigation ul li:last-child {
+    margin-right: 0;
+}
+
+.navigation ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+}
+
+.navigation ul li a:hover {
+    text-decoration: underline;
+}
+
+.github-logo {
+    display: flex;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.github-logo:hover {
+    text-decoration: underline;
+}
+
+.github-logo img {
+    width: 40px;
+    height: auto;
+    margin-right: 5px;
+    margin-left: 2px;
+}
+
+.logo img {
+    display: flex;
+    align-items: center;
+    width: 40px;
+    height: auto;
+    margin-right: 5px;
+}
+
+.footer {
+    background-color: #383838;
+    color: #fff;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+    box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.5);
+    margin-top: 10px;
+}
+
+.content {
+    margin-bottom: 20px;
+}
+
+.footer-container {
+    bottom: 0;
+    position: sticky;
+    max-width: auto;
+    margin: 0 auto;
+}
+
+.contact-info {
+    margin-top: 5px;
+}
+
+.contact-info span {
+    margin-right: 20px;
+}
+
+.contact-info a {
+    color: #fff;
+}
+
+.contact-info a:hover {
+    color: #d3d2d2;
+}
+
+.contact-info span:last-child {
+    margin-right: 0;
+}
+
 .my-button {
-    background-color: #0b520b; /* Цвет фона кнопки */
-    border: none; /* Убираем границу */
-    color: white; /* Цвет текста кнопки */
-    padding: 10px 20px; /* Отступы внутри кнопки */
-    text-align: center; /* Выравнивание текста по центру */
-    text-decoration: none; /* Убираем подчеркивание текста */
-    display: inline-block; /* Отображаем как блок */
-    font-size: 16px; /* Размер шрифта */
-    margin: 4px 2px; /* Отступы между кнопками */
-    cursor: pointer; /* Изменяем вид курсора при наведении на кнопку */
-    border-radius: 4px; /* Закругленные углы */
+    color: #ffffff;
+    background-color: #383838;
+    border-color: #21262d;
+    box-shadow: 0 0 transparent, 0 0 transparent;
+    transition: color 80ms cubic-bezier(0.33, 1, 0.68, 1),
+                background-color 80ms cubic-bezier(0.33, 1, 0.68, 1),
+                box-shadow 80ms cubic-bezier(0.33, 1, 0.68, 1),
+                border-color 80ms cubic-bezier(0.33, 1, 0.68, 1);
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .my-button:hover {
-    background-color: #45a049; /* Цвет фона кнопки при наведении */
+    background-color: #30363d;
+    border-color: #8b949e;
 }
 
 .my-button:active {
-    background-color: #3e8e41; /* Цвет фона кнопки при нажатии */
-}
-
-/* Стили для элементов с классом "container" и "column" */
-.container {
-    display: flex; /* Используем flexbox для расположения элементов */
-}
-
-.column {
-    flex: 1; /* Равномерное распределение доступной ширины между колонками */
-    padding: 10px; /* Отступы внутри колонки */
-}
-
-/* Стили для текста в ячейках таблицы */
-td.text-center {
-    text-align: center; /* Выравнивание текста по центру в ячейках */
-}
-
-/* Стили для подложки строк таблицы */
-tr.table-row::after {
-    content: ""; /* Добавляем пустой контент */
-    display: block; /* Отображаем как блок */
-    background-color: #c71f1f; /* Цвет фона подложки */
-    height: 5px; /* Высота подложки */
-}
-
-/* Стили для панели статей */
-div.article-panel {
-    background: #eee; /* Цвет фона панели статей */
-    padding: 5px 10px 5px 10px; /* Отступы внутри панели */
-    box-sizing: border-box; /* Учитываем границу внутри размеров */
-    overflow: hidden; /* Скрытие лишнего контента */
-    color: #555; /* Цвет текста */
-}
-
-div.article-panel p.first {
-    margin: 0; /* Убираем отступы для первого параграфа */
-    float: left; /* Выравнивание по левому краю */
-}
-
-div.article-panel p.last {
-    margin: 0; /* Убираем отступы для последнего параграфа */
-    float: right; /* Выравнивание по правому краю */
-}
-
-/* Стили для списка статей */
-ul.list-articles {
-    list-style: none; /* Убираем маркеры списка */
-    margin: 0; /* Убираем отступы */
-    padding: 0; /* Убираем поля */
-}
-
-ul.list-articles li {
-    border-bottom: 1px solid #ccc; /* Горизонтальная линия между элементами списка */
-}
-
-/* Стили для таблицы на странице */
-.table-page {
-    width: 100%; /* Ширина 100% */
-    height: 100%; /* Высота 100% */
-    vertical-align: top; /* Выравнивание по верхней границе */
-}
-
-.table-page tr {
-    height: 100%; /* Высота 100% для строк */
-}
-
-.clear {
-    clear: both; /* Очистка обтекания */
-}
-
-/* Стили для хедера */
-.header {
-    background: #3F4137; /* Цвет фона хедера */
-    height: 60px; /* Высота хедера */
-}
-
-
-/* Стили для логотипа в хедере */
-.logo {
-    background: url('../images/aelogo.png') no-repeat 10px 5px; /* Фоновое изображение логотипа */
-    width: 58px; /* Ширина логотипа */
-    height: 47px; /* Высота логотипа */
-}
-
-/* Стили для меню верхнего уровня */
-.mainmenu {
-    display: flex; /* Используем flexbox для расположения элементов */
-    align-items: center; /* Выравнивание элементов по вертикали по центру */
-    height: 60px; /* Высота меню */
-    font-size: 20px; /* Размер шрифта для пунктов меню */
-}
-
-/* Стили для элементов меню верхнего уровня */
-.mainmenu_item {
-    margin: 0 30px; /* Отступы слева и справа между элементами меню */
-}
-
-/* Стили для логотипа в меню верхнего уровня */
-.mainmenu_item.logo {
-    margin: 0; /* Убираем отступы для логотипа */
-}
-
-/* Стили для ссылок в меню верхнего уровня */
-.mainmenu_item a {
-    color: #fdc073; /* Цвет текста ссылок */
-    text-decoration: none; /* Убираем подчеркивание текста ссылок */
-}
-
-/* Стили для ссылок при наведении в меню верхнего уровня */
-.mainmenu_item a:hover {
-    color: #FDA83D; /* Цвет текста ссылок при наведении */
+    background-color: #161b22;
+    border-color: #6e7681;
 }

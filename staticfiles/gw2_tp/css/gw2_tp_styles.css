@@ -1,22 +1,36 @@
-/* Стили для элементов с классом "container" и "column" */
 .container {
     display: flex;
-}
-
-.column {
-    flex: 1;
-    padding: 10px;
-}
-
-/* Стили для текста в ячейках таблицы */
-td.text-center {
+    justify-content: center;
+    padding: 5px;
     text-align: center;
+    overflow-x: auto;
+    flex-wrap: wrap;
 }
 
-/* Стили для подложки строк таблицы */
-tr.table-row::after {
-    content: "";
-    display: block;
-    background-color: #c71f1f;
-    height: 5px;
+.trading_title {
+    font-weight: bold;
+    padding-top: 8px;
+    padding-bottom: 3px;
+}
+
+td, tr {
+    vertical-align: middle;
+}
+
+td {
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    line-height: 2;
+}
+
+.img-icon {
+    border-radius: 15px;
+    border: 1px solid rgba(89, 89, 89, 0.5);
+}
+
+.number-image {
+    width: 20px; /* Установите ширину изображения */
+    height: 20px; /* Установите высоту изображения */
+    margin-left: 5px; /* Установите отступ слева, чтобы разделить число и изображение */
 }
